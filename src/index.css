@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "FHA Broken Gothic";
+  font-display: swap;
+  src: url("./assets/fonts/FHA_Broken_Gothic_Poster_NC.ttf") format("truetype");
+}
+
+@theme {
+  --color-background: #1d1e21;
+  /* CHANGE */
+  --color-background-contrast: #261415;
+  --color-surface: #060607;
+  --color-background-selected: #602322;
+
+  --color-text-primary: #ffcbb5;
+  --color-text-muted: #ff8e6d;
+  --color-text-selected: #f0f0f5;
+
+  --color-border-default: #fef3e6;
+  --color-border-strong: #555555;
+
+  --color-primary: #8d2523;
+  --color-primary-hover: #ba332d;
+
+  --font-title: "FHA Broken Gothic", sans-serif;
+  /* CHANGE */
+  --font-heading: sans-serif;
+}
