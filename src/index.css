@@ -1,29 +1,113 @@
 @import "tailwindcss";
 
+/* Browser autofill background color fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset !important;
+  -webkit-text-fill-color: var(--color-text-primary) !important;
+  font-family: inherit !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+@theme {
+  /* Background */
+  --color-background: #0c0a09;
+  --color-background-contrast: #1a0f0f;
+  --color-surface: #1c1917;
+  --color-surface-hover: #292524;
+  --color-muted: #2f2b2a;
+
+  /* Text */
+  --color-text-primary: #d6c5b3;
+  --color-text-muted: #8a7b6b;
+  --color-text-selected: #f5ece1;
+  --color-text-inverse: #0c0a09;
+
+  /* Borders */
+  --color-border: #44403c;
+  --color-border-strong: #78716c;
+  --color-border-muted: #292524;
+
+  /* Primary */
+  --color-primary: #991b1b;
+  --color-primary-hover: #b91c1c;
+  --color-primary-surface: #450a0a;
+
+  /* Semantics */
+
+  /* Danger */
+  --color-danger: #ef4444;
+  --color-danger-muted: #991b1b;
+  --color-danger-surface: #450a0a;
+
+  /* Success */
+  --color-success: #10b981;
+  --color-success-muted: #065f46;
+  --color-success-surface: #022c22;
+
+  /* Warning */
+  --color-warning: #f59e0b;
+  --color-warning-muted: #92400e;
+  --color-warning-surface: #451a03;
+
+  /* CHANGE */
+  /* Fonts */
+  --font-title: "Merriweather", "Playfair Display", serif;
+  --font-gothic: "FHA Broken Gothic", serif;
+  --font-heading: sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* gothic font works good and as I want only in capscase */
+@utility font-gothic-title {
+  font-family: var(--font-gothic);
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* REVIEW later */
+}
+
+@utility font-title-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(0.875rem, 1vw + 0.7rem, 1.25rem);
+}
+
 @font-face {
   font-family: "FHA Broken Gothic";
   font-display: swap;
   src: url("./assets/fonts/FHA_Broken_Gothic_Poster_NC.ttf") format("truetype");
 }
 
-@theme {
-  --color-background: #1d1e21;
-  /* CHANGE */
-  --color-background-contrast: #261415;
-  --color-surface: #060607;
-  --color-background-selected: #602322;
+/* For tooltip */
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
 
-  --color-text-primary: #ffcbb5;
-  --color-text-muted: #ff8e6d;
-  --color-text-selected: #f0f0f5;
+@keyframes tooltip-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(4px);
+  }
+}
 
-  --color-border-default: #fef3e6;
-  --color-border-strong: #555555;
+.tooltip[data-state="delayed-open"][data-state="delayed-open"],
+.tooltip[data-state="instant-open"] {
+  animation: tooltip-in 0.15s ease-out forwards;
+}
 
-  --color-primary: #8d2523;
-  --color-primary-hover: #ba332d;
-
-  --font-title: "FHA Broken Gothic", sans-serif;
-  /* CHANGE */
-  --font-heading: sans-serif;
+.tooltip[data-state="closed"] {
+  animation: tooltip-out 0.15s ease-in forwards;
 }
