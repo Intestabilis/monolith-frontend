@@ -7,7 +7,7 @@ function ProtectedAuthRoute() {
   // CHANGE to loader
   if (isPending) return <div>TESSST</div>;
 
-  if (!user) return <Navigate to="/login" replace></Navigate>;
+  if (!user) return <Navigate to="/" replace></Navigate>;
 
   return <Outlet />;
 }
