@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import { apiClient } from "../../../api/apiClient";
-import type { AuthResponse } from "../../../types/AuthResponse";
+import { login as loginApi } from "../../../api/apiAuth";
 
 export function useLogin() {
   const queryClient = useQueryClient();
@@ -11,14 +10,9 @@ export function useLogin() {
     mutate: login,
     isPending,
     isError,
+    error,
   } = useMutation({
-    mutationFn: async ({ email, password }: Record<string, string>) => {
-      const { data } = await apiClient.post<AuthResponse>("/auth/login", {
-        email,
-        password,
-      });
-      return data;
-    },
+    mutationFn: loginApi,
     onSuccess: (data) => {
       localStorage.setItem("token", data.accessToken);
       // CHANGE to proper dto type
@@ -31,5 +25,5 @@ export function useLogin() {
     },
   });
 
-  return { login, isPending, isError };
+  return { login, isPending, isError, error };
 }

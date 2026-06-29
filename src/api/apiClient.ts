@@ -82,3 +82,15 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+// to show backend error messages like user does not exist etc.
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const backendMessage =
+      error?.response?.data?.message ||
+      error.message ||
+      "Network error occured";
+    return Promise.reject(new Error(backendMessage));
+  },
+);
