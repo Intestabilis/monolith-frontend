@@ -67,7 +67,7 @@ function LoginForm({ onToggle }: LoginFormProps) {
           disabled={isPending}
           className="mt-2 w-full"
         >
-          {isPending ? "Відкриваємо двері..." : "Увійти"}
+          {isPending ? "Вхід..." : "Увійти"}
         </Button>
       </form>
 

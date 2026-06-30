@@ -77,7 +77,7 @@ function RegisterForm({ onToggle }: RegisterFormProps) {
           disabled={isPending}
           className="mt-2 w-full"
         >
-          {isPending ? "Створюємо запис..." : "Зареєструватися"}
+          {isPending ? "Реєстрація..." : "Зареєструватися"}
         </Button>
       </form>
 
