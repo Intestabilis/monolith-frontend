@@ -7,7 +7,7 @@ import { useCampaignsList } from "../features/campaigns/hooks/useCampaignsList";
 import { useProfile } from "../features/user/useProfile";
 
 function ProfilePage() {
-  const { user: authData, isPending } = useAuth();
+  const { user: authData } = useAuth();
   const { user, isPending: isUserPending } = useProfile(authData?.id);
 
   const { campaigns: masterCampaigns, isPending: isMasterLoading } =
@@ -104,6 +104,7 @@ function ProfilePage() {
             isLoading={isMasterLoading}
             emptyTitle="Кампейни відсутні"
             emptyDescription="Ви не маєте жодного власного кампейна"
+            layout="grid"
             onCreateClick={handleCreateCampaignClick}
           />
         </div>
@@ -122,7 +123,8 @@ function ProfilePage() {
             campaigns={playerCampaigns}
             isLoading={isPlayerLoading}
             emptyTitle="Кампейни відсутні"
-            emptyDescription="Вас ще не додано як гравця до жодного кампейну."
+            layout="grid"
+            emptyDescription="Вас ще не додано як гравця до жодного кампейну"
           />
         </div>
       </section>

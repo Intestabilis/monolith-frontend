@@ -1,17 +1,9 @@
 import { Link } from "react-router";
-import type { CampaignPreview } from "../../../schemas/campaign.schema";
 import Badge from "../../../components/ui/Badge";
 import Card from "../../../components/ui/Card";
+import type { CampaignCardProps } from "./propsInterfaces";
 
-interface CampaignCardProps {
-  campaign: {
-    data: CampaignPreview;
-    meta: { userRole: "master" | "player" };
-  };
-  showRole?: boolean;
-}
-
-function CampaignCard({ campaign, showRole = true }: CampaignCardProps) {
+function CampaignGridCard({ campaign, showRole = true }: CampaignCardProps) {
   const { id, title, masterUsername, imageUrl } = campaign.data;
   const { userRole } = campaign.meta;
   console.log(campaign);
@@ -59,4 +51,4 @@ function CampaignCard({ campaign, showRole = true }: CampaignCardProps) {
   );
 }
 
-export default CampaignCard;
+export default CampaignGridCard;
