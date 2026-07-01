@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Badge from "../components/ui/Badge";
 import Card from "../components/ui/Card";
 import Skeleton from "../components/ui/Skeleton";
@@ -5,10 +6,13 @@ import { useAuth } from "../features/auth/hooks/useAuth";
 import { CampaignList } from "../features/campaigns/components/CampaignList";
 import { useCampaignsList } from "../features/campaigns/hooks/useCampaignsList";
 import { useProfile } from "../features/user/useProfile";
+import CreateCampaignModal from "../features/campaigns/components/CreateCampaignModal";
 
 function ProfilePage() {
   const { user: authData } = useAuth();
   const { user, isPending: isUserPending } = useProfile(authData?.id);
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { campaigns: masterCampaigns, isPending: isMasterLoading } =
     useCampaignsList("master");
@@ -17,6 +21,7 @@ function ProfilePage() {
 
   // IMPLEMENT REVIEW probably create "button" will just create a new campaign and reditect to info page instead
   function handleCreateCampaignClick() {
+    setIsCreateModalOpen(true);
     console.log("Create campaign");
   }
 
@@ -89,6 +94,10 @@ function ProfilePage() {
       </Card>
 
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <CreateCampaignModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
         <div className="space-y-4">
           <div className="flex items-center gap-3 border-b-2 border-border-muted pb-2">
             <span className="text-xl text-primary">I</span>
