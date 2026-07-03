@@ -66,3 +66,20 @@ export async function updateCampaign(
 export async function deleteCampaign(id: string): Promise<void> {
   await apiClient.delete(`/campaigns/${id}`);
 }
+
+export async function uploadCover(id: string, file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const { data } = await apiClient.post<{ data: { imageUrl: string } }>(
+    `/campaigns/${id}/cover`,
+    formData,
+    {
+      // just to be sure
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return data.data.imageUrl;
+}
