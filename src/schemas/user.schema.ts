@@ -4,6 +4,7 @@ const UserSchema = z.object({
   email: z.email(),
   username: z.string().min(6).max(20),
   password: z.string().min(3).max(20),
+  avatarUrl: z.url().nullable().optional(),
 });
 
 export const CreateUserSchema = UserSchema.extend({
@@ -36,3 +37,14 @@ export const UserInfoSchema = z
   .omit({ password: true });
 
 export type UserInfoDTO = z.infer<typeof UserInfoSchema>;
+
+export const CampaignMemberSchema = UserInfoSchema.omit({
+  email: true,
+  id: true,
+}).extend({
+  // joinedAt: z.iso.datetime(),
+  // characterName: z.string().optional(),
+  // characterClass: z.string().optional(),
+});
+
+export type CampaignMember = z.infer<typeof CampaignMemberSchema>;

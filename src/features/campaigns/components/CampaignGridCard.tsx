@@ -8,7 +8,6 @@ function CampaignGridCard({ campaign, showRole = true }: CampaignCardProps) {
   const { id, title, masterUsername, imageUrl } = campaign.data;
   const { userRole } = campaign.meta;
   const optimizedImageUrl = getCloudinaryThumb(imageUrl);
-  console.log(optimizedImageUrl);
   return (
     <Card variant="interactive">
       <div className="relative mb-4 h-40 w-full overflow-hidden border border-border-muted bg-background">
