@@ -139,31 +139,36 @@ function Sidebar({ campaignTitle }: { campaignTitle: string }) {
           </div>
         </div>
 
+        {/* REVIEW return path */}
         <Link to="/profile" className="block w-full">
-          <Button
-            variant="default"
-            size="sm"
-            className={cn(
-              "w-full border-2 border-border-strong bg-surface transition-colors hover:border-border-default hover:bg-background-contrast hover:text-text-selected",
-              isCollapsed ? "px-0 justify-center h-10" : "gap-2 py-3 h-10",
-            )}
-            title="Повернутися до сторінки профіля"
+          <Tooltip
+            content="Повернутися до профілю"
+            side={isCollapsed ? "left" : "top"}
           >
-            <ReturnIcon
+            <Button
+              variant="default"
+              size="sm"
               className={cn(
-                "h-4 w-4 shrink-0 text-text-primary transition-transform",
-                !isCollapsed && "group-hover:-translate-x-1",
-              )}
-            />
-            <span
-              className={cn(
-                "font-heading text-xs font-bold tracking-wider overflow-hidden whitespace-nowrap transition-all duration-300",
-                isCollapsed ? "max-w-0 opacity-0" : "max-w-25 opacity-100",
+                "w-full border-2 border-border-strong bg-surface transition-colors hover:border-border-default hover:bg-background-contrast hover:text-text-selected",
+                isCollapsed ? "px-0 justify-center h-10" : "gap-2 py-3 h-10",
               )}
             >
-              Повернутися
-            </span>
-          </Button>
+              <ReturnIcon
+                className={cn(
+                  "h-4 w-4 shrink-0 text-text-primary transition-transform",
+                  !isCollapsed && "group-hover:-translate-x-1",
+                )}
+              />
+              <span
+                className={cn(
+                  "font-heading text-xs font-bold tracking-wider overflow-hidden whitespace-nowrap transition-all duration-300",
+                  isCollapsed ? "max-w-0 opacity-0" : "max-w-25 opacity-100",
+                )}
+              >
+                Повернутися
+              </span>
+            </Button>
+          </Tooltip>
         </Link>
       </div>
     </aside>

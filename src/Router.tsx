@@ -7,6 +7,9 @@ import AuthPage from "./pages/AuthPage";
 import GlobalLayout from "./layouts/GlobalLayout";
 import ProtectedCampaignRoute from "./features/auth/ProtectedCampaignRoute";
 import CampaignLayout from "./layouts/CampaignLayout";
+// import DashboardPage from "./pages/DashboardPage";
+import CampaignPage from "./pages/CampaignPage";
+import JoinCampaignPage from "./pages/JoinCampaignPage";
 
 function Router() {
   return (
@@ -20,13 +23,15 @@ function Router() {
         </Route>
         <Route element={<ProtectedAuthRoute />}>
           <Route path="/profile" element={<ProfilePage />} />
+          {/* <Route path="/welcome" element={<DashboardPage />} /> */}
+          <Route path="/join/:token" element={<JoinCampaignPage />} />
         </Route>
       </Route>
 
       <Route element={<ProtectedAuthRoute />}>
         <Route element={<ProtectedCampaignRoute />}>
           <Route path="/campaigns/:campaignId" element={<CampaignLayout />}>
-            <Route index element={<div>Кампейн (Заглушка)</div>} />
+            <Route index element={<CampaignPage></CampaignPage>} />
             <Route path="questboard" element={<div>Квести (Заглушка)</div>} />
             <Route path="codex" element={<div>Кодекс (Заглушка)</div>} />
             <Route path="dmscreen" element={<div>Ширма (Заглушка)</div>} />
