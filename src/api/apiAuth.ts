@@ -4,7 +4,7 @@ import type {
   UserStatusDTO,
 } from "../schemas/user.schema";
 import type { AuthResponse } from "../types/AuthResponse";
-import { tokenService } from "../utils/TokenService";
+import { tokenService } from "../utils/tokenService";
 import { apiClient } from "./apiClient";
 
 type CreateUserDTORequest = Omit<CreateUserDTO, "confirmPassword">;

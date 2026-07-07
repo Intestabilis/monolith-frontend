@@ -1,6 +1,7 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { logout as logoutApi } from "../../../api/apiAuth";
+import { tokenService } from "../../../utils/tokenService";
 
 export function useLogout() {
   const queryClient = useQueryClient();
@@ -9,7 +10,7 @@ export function useLogout() {
   const { mutate: logout, isPending } = useMutation({
     mutationFn: logoutApi,
     onSettled: () => {
-      localStorage.removeItem("token");
+      tokenService.clear();
       // queryClient.clear();
       queryClient.removeQueries({
         predicate: (query) => query.queryKey[0] !== "auth-status",
