@@ -14,10 +14,18 @@ function ProfilePage() {
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const { campaigns: masterCampaigns, isPending: isMasterLoading } =
-    useCampaignsList("master");
-  const { campaigns: playerCampaigns, isPending: isPlayerLoading } =
-    useCampaignsList("player");
+  const {
+    campaigns: masterCampaigns,
+    isPending: isMasterLoading,
+    error: masterCampaignsError,
+    refetch: refetchMaster,
+  } = useCampaignsList("master");
+  const {
+    campaigns: playerCampaigns,
+    isPending: isPlayerLoading,
+    error: playerCampaignsError,
+    refetch: refetchPlayer,
+  } = useCampaignsList("player");
 
   // IMPLEMENT REVIEW probably create "button" will just create a new campaign and reditect to info page instead
   function handleCreateCampaignClick() {
@@ -103,14 +111,18 @@ function ProfilePage() {
             <span className="text-xl text-primary">I</span>
             <h2 className="font-gothic-title text-2xl font-bold tracking-wide text-text-selected">
               Кампейни майстра{" "}
-              <span className="font-mono text-sm text-text-muted">
-                ({masterCampaigns?.length || 0})
-              </span>
+              {!masterCampaignsError && (
+                <span className="font-mono text-sm text-text-muted">
+                  ({masterCampaigns?.length || 0})
+                </span>
+              )}
             </h2>
           </div>
           <CampaignList
             campaigns={masterCampaigns}
             isLoading={isMasterLoading}
+            error={masterCampaignsError}
+            onRetry={refetchMaster}
             emptyTitle="Кампейни відсутні"
             emptyDescription="Ви не маєте жодного власного кампейна"
             layout="grid"
@@ -131,6 +143,8 @@ function ProfilePage() {
           <CampaignList
             campaigns={playerCampaigns}
             isLoading={isPlayerLoading}
+            error={playerCampaignsError}
+            onRetry={refetchPlayer}
             emptyTitle="Кампейни відсутні"
             layout="grid"
             emptyDescription="Вас ще не додано як гравця до жодного кампейну"

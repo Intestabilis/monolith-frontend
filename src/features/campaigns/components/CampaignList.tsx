@@ -6,6 +6,7 @@ import GridCampaignSkeleton from "./GridCampaignSkeleton";
 import NoCampaignsState from "./NoCampaignsState";
 import VerticalCampaignSkeleton from "./VerticalCampaignSkeleton";
 import CampaignListControls from "./CampaignListControls";
+import Button from "../../../components/ui/Button";
 
 type LayoutType = "grid" | "horizontal" | "vertical";
 export type FilterRole = "all" | "master" | "player";
@@ -14,6 +15,8 @@ export type SortOption = "newest" | "oldest" | "updated";
 export interface CampaignListProps {
   campaigns: CampaignListResponse | undefined;
   isLoading: boolean;
+  error?: Error | null;
+  onRetry?: () => void;
   emptyTitle: string;
   emptyDescription: string;
   layout?: LayoutType;
@@ -24,6 +27,8 @@ export interface CampaignListProps {
 export function CampaignList({
   campaigns,
   isLoading,
+  error,
+  onRetry,
   emptyTitle,
   emptyDescription,
   layout = "grid",
@@ -41,6 +46,30 @@ export function CampaignList({
       case "vertical":
         return <VerticalCampaignSkeleton />;
     }
+  }
+  // REVIEW styling
+  // Error handling
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 border-2 border-danger border-dashed bg-danger-surface text-danger">
+        <h4 className="font-gothic-title text-xl font-bold tracking-wide uppercase">
+          Помилка!
+        </h4>
+        <p className="font-mono text-sm mt-2 mb-6 text-text-primary text-center">
+          Не вдалося отримати список кампаній.
+        </p>
+
+        {onRetry && (
+          <Button
+            variant="default"
+            onClick={onRetry}
+            className="w-full sm:w-auto"
+          >
+            Спробувати знову
+          </Button>
+        )}
+      </div>
+    );
   }
 
   // Global Empty State

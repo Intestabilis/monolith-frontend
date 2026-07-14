@@ -1,5 +1,5 @@
 import { getCampaignEditorConfig } from "../../../lib/tiptap/editorConfigs";
-import { useCampaignContent } from "../hooks/useCampaignContent"; // Твій новий хук
+import { useCampaignContent } from "../hooks/useCampaignContent";
 import { useUpdateCampaignContent } from "../hooks/useUpdateCampaignContent";
 import DocumentEditor from "../../../components/editor/DocumentEditor";
 
@@ -15,8 +15,11 @@ export default function CampaignEditor({
   campaignId,
   isMaster,
 }: CampaignEditorProps) {
-  const { campaignContent, isPending: isFetching } =
-    useCampaignContent(campaignId);
+  const {
+    campaignContent,
+    isPending: isFetching,
+    error,
+  } = useCampaignContent(campaignId);
 
   const extensions = useMemo(
     () => getCampaignEditorConfig(campaignId),
@@ -26,11 +29,10 @@ export default function CampaignEditor({
   const { updateContent, isPending } = useUpdateCampaignContent();
 
   // CHANGE to proper loader
-  if (isFetching || !campaignContent) {
+  if (isFetching) {
     return (
       <div className="flex w-full min-h-125  border-dashed items-center justify-center border-2 border-border-strong bg-surface">
         <div className="flex flex-col items-center gap-4 animate-pulse">
-          <span className="text-4xl text-text-muted">📜</span>
           <p className="font-mono text-sm uppercase tracking-widest text-text-muted">
             Завантаження...
           </p>
@@ -39,10 +41,16 @@ export default function CampaignEditor({
     );
   }
 
+  // CHANGE to proper error alert REVIEW !campaignContent there
+  if (error || !campaignContent) {
+    return <div>ERROR</div>;
+  }
+
   const initialContent = campaignContent.data.content || {
     type: "doc",
     content: [{ type: "paragraph" }],
   };
+
   function handleSave(content: JSONContent, onSuccessCallback: () => void) {
     updateContent(
       { id: campaignId, content },

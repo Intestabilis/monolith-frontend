@@ -9,11 +9,12 @@ export function useCampaignsList(type: CampaignListType = "all") {
     data: campaigns,
     isPending,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["campaigns", "list", type],
     queryFn: () => fetchCampaignsList(type),
     staleTime: 5 * 60 * 1000,
   });
 
-  return { campaigns, isPending, error };
+  return { campaigns, isPending, error, refetch };
 }
