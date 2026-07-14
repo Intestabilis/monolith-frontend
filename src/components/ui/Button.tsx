@@ -8,13 +8,13 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-surface border-border-strong border-2 text-text-primary hover:border-border-default hover:text-text-selected",
+          "bg-surface border-border-strong border-2 text-text-primary hover:border-border-default hover:text-text-selected disabled:text-text-muted",
         primary:
           "bg-primary border-primary border-2 text-text-selected hover:bg-primary-hover hover:border-primary-hover",
         destructive:
           "bg-danger-surface border-primary border-2 text-danger hover:bg-primary-hover hover:text-text-selected",
         ghost:
-          "bg-transparent text-text-muted hover:text-text-primary border-transparent border-2",
+          "bg-transparent text-text-muted hover:text-text-primary border-transparent border-2 disabled:text-text-muted",
       },
       size: {
         default: "h-10 px-4 py-2",

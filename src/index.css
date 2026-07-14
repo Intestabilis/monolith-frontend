@@ -1,15 +1,7 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-/* Browser autofill background color fix */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset !important;
-  -webkit-text-fill-color: var(--color-text-primary) !important;
-  font-family: inherit !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
+/* DESIGN */
 
 @theme {
   /* Background */
@@ -60,11 +52,19 @@ input:-webkit-autofill:active {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+@font-face {
+  font-family: "FHA Broken Gothic";
+  font-display: swap;
+  src: url("./assets/fonts/FHA_Broken_Gothic_Poster_NC.ttf") format("truetype");
+}
+
+/* TAILWIND UTILITIES */
+
 /* gothic font works good and as I want only in capscase */
 @utility font-gothic-title {
   font-family: var(--font-gothic);
   text-transform: uppercase;
-  letter-spacing: 0.05em; /* REVIEW later */
+  letter-spacing: 0.05em;
 }
 
 @utility font-title-truncate {
@@ -74,13 +74,33 @@ input:-webkit-autofill:active {
   font-size: clamp(0.875rem, 1vw + 0.7rem, 1.25rem);
 }
 
-@font-face {
-  font-family: "FHA Broken Gothic";
-  font-display: swap;
-  src: url("./assets/fonts/FHA_Broken_Gothic_Poster_NC.ttf") format("truetype");
+/* Tailwind Typography blockquote fix (remove "" and italic) */
+@utility prose {
+  blockquote p::before {
+    content: none;
+  }
+  blockquote p::after {
+    content: none;
+  }
+  blockquote {
+    font-style: normal;
+  }
 }
 
-/* For tooltip */
+/* GLOBAL CSS */
+
+/* Browser autofill background color fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset !important;
+  -webkit-text-fill-color: var(--color-text-primary) !important;
+  font-family: inherit !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* For UI Tooltip */
 @keyframes tooltip-in {
   from {
     opacity: 0;
@@ -103,7 +123,7 @@ input:-webkit-autofill:active {
   }
 }
 
-.tooltip[data-state="delayed-open"][data-state="delayed-open"],
+.tooltip[data-state="delayed-open"],
 .tooltip[data-state="instant-open"] {
   animation: tooltip-in 0.15s ease-out forwards;
 }

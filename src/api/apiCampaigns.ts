@@ -6,6 +6,7 @@ import type {
   UpdateCampaignDTO,
 } from "../schemas/campaign.schema";
 import { apiClient } from "./apiClient";
+import { type JSONContent } from "@tiptap/react";
 
 export type CampaignListType = "all" | "master" | "player";
 
@@ -60,6 +61,13 @@ export async function updateCampaign(
     `/campaigns/${id}`,
     payload,
   );
+  return data;
+}
+
+export async function updateCampaignContent(id: string, content: JSONContent) {
+  const { data } = await apiClient.patch(`/campaigns/${id}/content`, {
+    content,
+  });
   return data;
 }
 
