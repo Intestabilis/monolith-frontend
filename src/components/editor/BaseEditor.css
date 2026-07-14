@@ -1,0 +1,149 @@
+/* REDACTOR THEME (tailwind typography prose override) */
+.editor-prose {
+  --tw-prose-body: var(--color-text-primary);
+  --tw-prose-headings: var(--color-text-selected);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: inherit;
+  --tw-prose-quotes: var(--color-text-primary);
+  --tw-prose-quote-borders: var(--color-primary);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-bullets: var(--color-border-strong);
+  --tw-prose-counters: var(--color-border-strong);
+}
+
+/* Line height logic (to set it 1.5 as default and be able to change to lower values) */
+/* weird fix because of tiptap line height that works in span element */
+.tiptap {
+  line-height: 1;
+}
+.tiptap :first-child {
+  margin-top: 0;
+}
+
+.editor-prose p,
+.editor-prose h1,
+.editor-prose h2,
+.editor-prose h3,
+.editor-prose li,
+.editor-prose blockquote {
+  line-height: 1.5;
+}
+
+.prose.editor-prose *:has(> span[style*="line-height: 1.25"]) {
+  line-height: 1.25 !important;
+}
+.prose.editor-prose *:has(> span[style*="line-height: 1.0"]),
+.prose.editor-prose *:has(> span[style*="line-height: 1;"]),
+.prose.editor-prose *:has(> span[style*="line-height: 1"]) {
+  line-height: 1 !important;
+}
+
+/* IMAGES (resize and align) */
+
+/* Resize wrapper */
+.ProseMirror *:has(> [data-resize-handle]) {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  line-height: 0;
+  font-size: 0;
+}
+
+.ProseMirror *:has(> [data-resize-handle]) img {
+  display: inline-block;
+}
+
+.data-resize-image-ui {
+  display: none !important;
+}
+
+/* Resize marker styles */
+/* (workaround because resize object in Image DOES NOT HAVE className prop so we're doing it THERE MANUALLY) */
+/* I'm really dissapointed since default resizable node view HAS options to customize all of that and does not require stupid workarounds */
+.ProseMirror [data-resize-handle] {
+  width: 14px !important;
+  height: 14px !important;
+  background-color: var(--color-surface) !important;
+  border: 2px solid var(--color-border-strong) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-in-out;
+  z-index: 50;
+}
+
+.ProseMirror[contenteditable="true"]
+  .ProseMirror-selectednode
+  [data-resize-handle],
+.ProseMirror[contenteditable="true"] .is-resizing [data-resize-handle] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ProseMirror [data-resize-handle]:hover {
+  background-color: var(--color-border) !important;
+}
+
+/* Marker positioning (corners and overriding default tiptap position that does not work correctly in this case) */
+.ProseMirror [data-resize-handle="top-left"] {
+  top: 0 !important;
+  left: 0 !important;
+  transform: translate(-50%, -50%);
+}
+.ProseMirror [data-resize-handle="top-right"] {
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  transform: translate(50%, -50%);
+}
+.ProseMirror [data-resize-handle="bottom-left"] {
+  bottom: 0 !important;
+  top: auto !important;
+  left: 0 !important;
+  transform: translate(-50%, 50%);
+}
+.ProseMirror [data-resize-handle="bottom-right"] {
+  bottom: 0 !important;
+  top: auto !important;
+  right: 0 !important;
+  left: auto !important;
+  transform: translate(50%, 50%);
+}
+
+/* Aligning (float for left/right block for center) */
+.ProseMirror *:has(img[data-align="left"]) {
+  float: left !important;
+  margin-right: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+.ProseMirror *:has(img[data-align="right"]) {
+  float: right !important;
+  margin-left: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+.ProseMirror *:has(img[data-align="center"]) {
+  display: block !important;
+  float: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: fit-content;
+}
+
+/* Loading animation for blob image (grayscale + pulsing) */
+.ProseMirror img[src^="blob:"] {
+  filter: grayscale(100%) blur(1px);
+  opacity: 0.6;
+  animation: pulse-upload 1.5s infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-upload {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
