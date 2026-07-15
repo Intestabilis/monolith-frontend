@@ -6,14 +6,9 @@ import { useState } from "react";
 import { cn } from "../utils/cn";
 import Button from "./ui/Button";
 import Separator from "./ui/Separator";
-import CampaignIcon from "./icons/CampaignIcon";
-import QuestIcon from "./icons/QuestIcon";
-import CodexIcon from "./icons/CodexIcon";
-import PartyIcon from "./icons/PartyIcon";
-import DMScreenIcon from "./icons/DMScreenIcon";
-import CollapseIcon from "./icons/CollapseIcon";
-import ReturnIcon from "./icons/ReturnIcon";
 import Tooltip from "../components/ui/Tooltip";
+import { ChevronRight, MoveLeft } from "lucide-react";
+import FantasyIcon from "./icons/FantasyIcon";
 
 function Sidebar({ campaignTitle }: { campaignTitle: string }) {
   const { user } = useAuth();
@@ -45,11 +40,11 @@ function Sidebar({ campaignTitle }: { campaignTitle: string }) {
               className="h-8 w-8 p-0 border border-border-strong bg-surface hover:bg-background-selected shrink-0"
               onClick={() => setIsCollapsed(!isCollapsed)}
             >
-              <CollapseIcon
-                className={cn(
-                  "h-4 w-4 text-text-primary transition-transform duration-300",
-                  !isCollapsed && "rotate-180",
-                )}
+              {/* idk we can just do a check and use ChevronLeft but it seems like more efficient? Not sure that one icon changes much but anyway */}
+              <ChevronRight
+                size="20"
+                strokeWidth="2.5"
+                className={`transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`}
               />
             </Button>
           </Tooltip>
@@ -77,22 +72,30 @@ function Sidebar({ campaignTitle }: { campaignTitle: string }) {
           to=""
           end
           isCollapsed={isCollapsed}
-          icon={<CampaignIcon />}
+          icon={<FantasyIcon name="unfurledScroll" className="h-8 w-8" />}
         >
           Огляд
         </SidebarItem>
         <SidebarItem
           to="questboard"
           isCollapsed={isCollapsed}
-          icon={<QuestIcon />}
+          icon={<FantasyIcon name="hangingSign" className="h-8 w-8" />}
         >
           Квести
         </SidebarItem>
-        <SidebarItem to="codex" isCollapsed={isCollapsed} icon={<CodexIcon />}>
+        <SidebarItem
+          to="codex"
+          isCollapsed={isCollapsed}
+          icon={<FantasyIcon name="openBook" className="h-8 w-8" />}
+        >
           Кодекс
         </SidebarItem>
 
-        <SidebarItem to="party" isCollapsed={isCollapsed} icon={<PartyIcon />}>
+        <SidebarItem
+          to="party"
+          isCollapsed={isCollapsed}
+          icon={<FantasyIcon name="campfire" className="h-8 w-8" />}
+        >
           Партія
         </SidebarItem>
 
@@ -101,7 +104,7 @@ function Sidebar({ campaignTitle }: { campaignTitle: string }) {
         <SidebarItem
           to="dmscreen"
           isCollapsed={isCollapsed}
-          icon={<DMScreenIcon />}
+          icon={<FantasyIcon name="bookCover" className="h-8 w-8" />}
         >
           Ширма
         </SidebarItem>
@@ -153,12 +156,7 @@ function Sidebar({ campaignTitle }: { campaignTitle: string }) {
                 isCollapsed ? "px-0 justify-center h-10" : "gap-2 py-3 h-10",
               )}
             >
-              <ReturnIcon
-                className={cn(
-                  "h-4 w-4 shrink-0 text-text-primary transition-transform",
-                  !isCollapsed && "group-hover:-translate-x-1",
-                )}
-              />
+              <MoveLeft size="20" />
               <span
                 className={cn(
                   "font-heading text-xs font-bold tracking-wider overflow-hidden whitespace-nowrap transition-all duration-300",

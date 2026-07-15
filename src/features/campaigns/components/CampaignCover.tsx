@@ -1,7 +1,7 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import { useUploadCampaignCover } from "../hooks/useUploadCampaignCover";
 import { cn } from "../../../utils/cn";
-import UploadIcon from "../../../components/icons/UploadIcon";
+import { Upload } from "lucide-react";
 
 interface CampaignCoverProps {
   campaignId: string;
@@ -96,7 +96,7 @@ function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
             )}
           >
             <div className="flex items-center gap-2 border-2 border-border-strong bg-surface px-4 py-2 text-sm font-bold uppercase tracking-wider text-text-primary shadow-[4px_4px_0px_var(--color-border-strong)]">
-              <UploadIcon />
+              <Upload size="16" />
               {isDragging
                 ? "Перетягніть зображення сюди"
                 : "Змінити обкладинку (PNG, JPG до 4 МБ)"}

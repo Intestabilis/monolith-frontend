@@ -1,4 +1,4 @@
-import PlusIcon from "../../../components/icons/PlusIcon";
+import { Plus } from "lucide-react";
 import CampaignVerticalCard from "./CampaignVerticalCard";
 import type { CampaignLayoutProps } from "./propsInterfaces";
 
@@ -25,7 +25,7 @@ function CampaignVerticalLayout({
           <div className="flex items-center gap-4 w-full overflow-hidden">
             <div className="flex h-16 w-16 shrink-0 items-center justify-center border-2 border-dashed border-border-strong bg-background/50 transition-colors group-hover:border-text-primary group-hover:bg-background-contrast">
               <span className="flex items-center justify-center text-5xl font-light leading-none text-border-strong transition-colors group-hover:text-text-primary pb-1">
-                <PlusIcon />
+                <Plus size="36" />
               </span>
             </div>
 

@@ -36,21 +36,28 @@ function SidebarItem({
     >
       <div
         className={cn(
-          "h-6 w-6 shrink-0 transition-transform duration-300 group-hover:scale-110",
-          isCollapsed ? "text-text-muted group-hover:text-text-primary" : "",
+          "flex items-center transition-all duration-300",
+          isCollapsed ? "justify-center" : "justify-start gap-4 ",
         )}
       >
-        {icon}
-      </div>
+        <div
+          className={cn(
+            "shrink-0 transition-transform duration-300 group-hover:scale-110",
+            isCollapsed ? "text-text-muted group-hover:text-text-primary " : "",
+          )}
+        >
+          {icon}
+        </div>
 
-      <span
-        className={cn(
-          "font-gothic-title text-lg mt-1 tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out",
-          isCollapsed ? "max-w-0 opacity-0" : "max-w-50 opacity-100",
-        )}
-      >
-        {children}
-      </span>
+        <span
+          className={cn(
+            "font-gothic-title text-lg mt-1 tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out",
+            isCollapsed ? "max-w-0 opacity-0" : "max-w-50 opacity-100",
+          )}
+        >
+          {children}
+        </span>
+      </div>
     </NavLink>
   );
 }
