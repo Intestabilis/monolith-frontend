@@ -12,6 +12,9 @@ export function useJoinCampaign() {
     error,
   } = useMutation({
     mutationFn: (token: string) => joinCampaignApi(token),
+    meta: {
+      errorMessage: "Помилка при приєднанні до кампейна",
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ["campaigns", "list", "player"],

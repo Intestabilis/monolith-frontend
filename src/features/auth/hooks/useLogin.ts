@@ -12,6 +12,7 @@ export function useLogin() {
     error,
   } = useMutation({
     mutationFn: loginApi,
+    meta: { hideToast: true },
     onSuccess: (data) => {
       tokenService.set(data.accessToken);
 

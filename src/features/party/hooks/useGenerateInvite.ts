@@ -6,9 +6,8 @@ export function useGenerateInvite(campaignId: string) {
     // REVIEW maybe implementing duration type on front-end too... ngl I'm so tired of this number of interfaces/types/etc
     mutationFn: (duration: "7d" | "30d") =>
       generateInviteUrl(campaignId, duration),
-    onError: (error) => {
-      // CHANGE add toast with error as in other cases
-      console.error("Error while creating invite link:", error);
+    meta: {
+      errorMessage: "Помилка при створенні запрошення",
     },
   });
 

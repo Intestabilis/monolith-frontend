@@ -13,6 +13,7 @@ export function useCampaignsList(type: CampaignListType = "all") {
   } = useQuery({
     queryKey: ["campaigns", "list", type],
     queryFn: () => fetchCampaignsList(type),
+    meta: { hideToast: true },
     staleTime: 5 * 60 * 1000,
   });
 

@@ -7,6 +7,7 @@ export function useCreateCampaign() {
 
   const { mutate: createCampaign, isPending } = useMutation({
     mutationFn: (data: CreateCampaignDTO) => createCampaignApi(data),
+    meta: { errorMessage: "Помилка при створенні кампанії" },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns", "list"] });
     },

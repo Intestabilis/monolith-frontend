@@ -8,6 +8,7 @@ export function useUpdateCampaign() {
   const { mutate: updateCampaign, isPending } = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateCampaignDTO }) =>
       updateCampaignApi(id, data),
+    meta: { errorMessage: "Помилка при оновленні кампанії" },
     onSuccess: (updatedCampaign, variables) => {
       queryClient.setQueryData(
         ["campaign", variables.id, "context"],

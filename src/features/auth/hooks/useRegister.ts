@@ -13,6 +13,7 @@ export function useRegister() {
     error,
   } = useMutation({
     mutationFn: registerApi,
+    meta: { hideToast: true },
     onSuccess: (data) => {
       tokenService.set(data.accessToken);
       // CHANGE to proper dto type

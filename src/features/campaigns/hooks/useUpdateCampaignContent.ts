@@ -8,6 +8,7 @@ export function useUpdateCampaignContent() {
   const { mutate: updateContent, isPending } = useMutation({
     mutationFn: ({ id, content }: { id: string; content: JSONContent }) =>
       updateCampaignContent(id, content),
+    meta: { errorMessage: "Помилка при оновленні кампанії" },
     onSuccess: (updatedData, variables) => {
       queryClient.setQueryData(
         ["campaign", variables.id, "content"],

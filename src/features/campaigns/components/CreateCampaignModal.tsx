@@ -49,10 +49,6 @@ function CreateCampaignModal({ isOpen, onClose }: CreateCampaignModalProps) {
         handleClose();
         navigate(`/campaigns/${response.data.id}/`);
       },
-      onError: (error) => {
-        // CHANGE to UI (toast or something)
-        console.error("Помилка при створенні кампанії:", error);
-      },
     });
   }
 

@@ -6,6 +6,7 @@ export function useDeleteCampaign() {
 
   const { mutate: deleteCampaign, isPending } = useMutation({
     mutationFn: (id: string) => deleteCampaignApi(id),
+    meta: { errorMessage: "Помилка при видаленні кампанії" },
     onSuccess: (_, deletedId) => {
       queryClient.removeQueries({ queryKey: ["campaign", deletedId] });
       queryClient.invalidateQueries({ queryKey: ["campaigns", "list"] });

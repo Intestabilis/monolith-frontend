@@ -9,6 +9,7 @@ export function useCampaignContent(campaignId: string | undefined) {
   } = useQuery({
     queryKey: ["campaign", campaignId, "content"],
     queryFn: () => fetchCampaignContent(campaignId!),
+    meta: { hideToast: true },
     enabled: !!campaignId,
     staleTime: 5 * 60 * 1000,
   });

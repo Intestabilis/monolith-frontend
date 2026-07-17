@@ -7,7 +7,9 @@ export function useUploadCampaignCover(campaignId: string) {
   const { mutateAsync: uploadCoverAsync, isPending: isUploading } = useMutation(
     {
       mutationFn: (file: File) => uploadCoverApi(campaignId, file),
-
+      meta: {
+        errorMessage: "Не вдалося завантажити обкладинку",
+      },
       onSuccess: (newImageUrl: string) => {
         queryClient.setQueryData<CampaignContextResponse>(
           ["campaign", campaignId, "context"],
@@ -23,10 +25,6 @@ export function useUploadCampaignCover(campaignId: string) {
             };
           },
         );
-      },
-      onError: (err) => {
-        // CHANGE use toast or something (and check backend error for format/size error with according message)
-        console.error("Не вдалося завантажити обкладинку: ", err);
       },
     },
   );

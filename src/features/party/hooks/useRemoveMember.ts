@@ -11,9 +11,8 @@ export function useRemoveMember(campaignId: string) {
         queryKey: ["campaign", campaignId, "context"],
       });
     },
-    onError: (error) => {
-      // CHANGE add toast as usual
-      console.error("Error while kicking player: ", error);
+    meta: {
+      errorMessage: "Помилка при видаленні гравця",
     },
   });
 

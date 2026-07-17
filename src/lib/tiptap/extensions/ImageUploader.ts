@@ -1,5 +1,6 @@
 import { Extension } from "@tiptap/react";
-import { uploadEditorImage } from "../../../api/apiUpload"; // Перевір свій шлях
+import { uploadEditorImage } from "../../../api/apiUpload";
+import toast from "react-hot-toast";
 
 // adding custom command to declaration
 declare module "@tiptap/core" {
@@ -73,8 +74,8 @@ export const ImageUploader = Extension.create<{ campaignId: string | null }>({
               }, 0);
             })
             .catch((err) => {
-              // CHANGE to toast(?), not sure since probably I'll also add toast in query
-              console.error("Помилка завантаження зображення", err);
+              // REVIEW how to remove "Error" word from, well, error (don't want to sort it out now)
+              toast.error(`Помилка при завантаженні зображення: ${err}`);
               // finding deleting blob image from tiptap tree
               editor.commands.command(({ tr: errorTr }) => {
                 errorTr.doc.descendants((node, pos) => {

@@ -10,6 +10,7 @@ export function useCampaignContextQuery(campaignId: string | undefined) {
   } = useQuery({
     queryKey: ["campaign", campaignId, "context"],
     queryFn: () => fetchCampaignContext(campaignId!),
+    meta: { errorMessage: "Неможливо завантажити кампейн" },
     enabled: !!campaignId,
     retry: false,
     staleTime: 5 * 60 * 1000,
