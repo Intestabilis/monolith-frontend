@@ -11,7 +11,7 @@ import type { ReactNode } from "react";
 
 interface BaseEditorProps {
   extensions: Extensions;
-  value: JSONContent;
+  value?: JSONContent | null;
   onChange: (value: JSONContent) => void;
   disabled?: boolean;
   className?: string;

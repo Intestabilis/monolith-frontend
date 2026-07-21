@@ -15,6 +15,11 @@
 /* weird fix because of tiptap line height that works in span element */
 .tiptap {
   line-height: 1;
+
+  /* for correct wrapping if word is too long for remaining line space */
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 .tiptap :first-child {
   margin-top: 0;
