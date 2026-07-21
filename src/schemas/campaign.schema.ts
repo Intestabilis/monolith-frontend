@@ -1,13 +1,6 @@
 import z from "zod";
 import { CampaignMemberSchema } from "./user.schema";
-
-// REVIEW
-// technically don't need it here since we can use JSONContent from Tiptap, but will keep it for a while
-const TiptapContentSchema = z.looseObject({
-  type: z.literal("doc"),
-  // simple validation, can impove with definite union schema for every possible content but IMHO too much work it'll suffice
-  content: z.array(z.any()).optional(),
-});
+import { TiptapContentSchema } from "./schemas";
 
 export const CampaignRoleSchema = z.enum(["master", "player"]);
 export type CampaignRole = z.infer<typeof CampaignRoleSchema>;
