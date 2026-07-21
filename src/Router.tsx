@@ -10,6 +10,7 @@ import CampaignLayout from "./layouts/CampaignLayout";
 // import DashboardPage from "./pages/DashboardPage";
 import CampaignPage from "./pages/CampaignPage";
 import JoinCampaignPage from "./pages/JoinCampaignPage";
+import QuestboardPage from "./pages/QuestboardPage";
 
 function Router() {
   return (
@@ -32,7 +33,7 @@ function Router() {
         <Route element={<ProtectedCampaignRoute />}>
           <Route path="/campaigns/:campaignId" element={<CampaignLayout />}>
             <Route index element={<CampaignPage></CampaignPage>} />
-            <Route path="questboard" element={<div>Квести (Заглушка)</div>} />
+            <Route path="questboard" element={<QuestboardPage />} />
             <Route path="codex" element={<div>Кодекс (Заглушка)</div>} />
             <Route path="dmscreen" element={<div>Ширма (Заглушка)</div>} />
             <Route path="party" element={<div>Партія (Заглушка)</div>} />
