@@ -5,6 +5,7 @@ import DocumentEditor from "../../../components/editor/DocumentEditor";
 
 import { type JSONContent } from "@tiptap/react";
 import { useMemo } from "react";
+import Loader from "../../../components/ui/Loader";
 
 interface CampaignEditorProps {
   campaignId: string;
@@ -28,16 +29,14 @@ export default function CampaignEditor({
 
   const { updateContent, isPending } = useUpdateCampaignContent();
 
-  // CHANGE to proper loader
   if (isFetching) {
     return (
-      <div className="flex w-full min-h-125  border-dashed items-center justify-center border-2 border-border-strong bg-surface">
-        <div className="flex flex-col items-center gap-4 animate-pulse">
-          <p className="font-mono text-sm uppercase tracking-widest text-text-muted">
-            Завантаження...
-          </p>
-        </div>
-      </div>
+      <Loader
+        variant="d20"
+        size="lg"
+        className="w-full min-h-125 bg-surface"
+        text="Завантаження вмісту..."
+      />
     );
   }
 

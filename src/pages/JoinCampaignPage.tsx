@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Card from "../components/ui/Card";
 import Alert from "../components/ui/Alert";
 import Button from "../components/ui/Button";
+import Loader from "../components/ui/Loader";
 
 function JoinCampaignPage() {
   const { token } = useParams<{ token: string }>();
@@ -46,15 +47,7 @@ function JoinCampaignPage() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-background p-4">
-      <div className="flex flex-col items-center gap-6 animate-pulse">
-        {/* CHANGE to icon */}
-        <span className="text-5xl text-primary">LOAD</span>
-        <p className="font-mono text-lg uppercase tracking-widest text-text-selected">
-          Приєднання до кампейну...
-        </p>
-      </div>
-    </div>
+    <Loader variant="d20" size="fullscreen" text="Приєднання до кампейну..." />
   );
 }
 

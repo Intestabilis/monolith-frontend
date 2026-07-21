@@ -2,6 +2,7 @@ import { useRef, useState, type ChangeEvent } from "react";
 import { useUploadCampaignCover } from "../hooks/useUploadCampaignCover";
 import { cn } from "../../../utils/cn";
 import { Upload } from "lucide-react";
+import Loader from "../../../components/ui/Loader";
 
 interface CampaignCoverProps {
   campaignId: string;
@@ -64,13 +65,7 @@ function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
         }
       >
         {isUploading ? (
-          // CHANGE proper loader
-          <div className="flex flex-col items-center gap-3 z-20">
-            <span className="animate-spin text-3xl">⚔️</span>
-            <span className="font-mono text-sm text-text-selected uppercase bg-background/80 px-3 py-1">
-              Завантаження...
-            </span>
-          </div>
+          <Loader variant="d20" size="lg" text="Завантаження..." />
         ) : imageUrl ? (
           <img
             src={imageUrl}

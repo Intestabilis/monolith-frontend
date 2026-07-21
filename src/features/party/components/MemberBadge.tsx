@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import Tooltip from "../../../components/ui/Tooltip";
 import { cn } from "../../../utils/cn";
 
@@ -81,20 +82,7 @@ function MemberBadge({
             }}
             className="p-1.5 shrink-0 text-text-muted hover:text-danger hover:bg-danger-surface transition-colors rounded-sm opacity-0 group-hover:opacity-100"
           >
-            {/* CHANGE to icon */}
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="3"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
+            <X size="16" strokeWidth="3" />
           </button>
         </Tooltip>
       )}
