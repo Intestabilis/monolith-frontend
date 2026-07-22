@@ -8,7 +8,12 @@ import {
   X,
   GripVertical,
 } from "lucide-react";
-import { useState, useRef, type ComponentProps } from "react";
+import {
+  useState,
+  useRef,
+  type ComponentProps,
+  type PropsWithChildren,
+} from "react";
 import Tooltip from "../../../components/ui/Tooltip";
 
 interface QuestCategoryGroupProps {
@@ -20,7 +25,6 @@ interface QuestCategoryGroupProps {
   defaultOpen?: boolean;
   isEmpty?: boolean;
   dragHandleProps?: ComponentProps<"div">; // for dnd-kit
-  children: React.ReactNode;
 }
 
 function QuestCategoryGroup({
@@ -33,7 +37,7 @@ function QuestCategoryGroup({
   isEmpty = false,
   dragHandleProps,
   children,
-}: QuestCategoryGroupProps) {
+}: PropsWithChildren<QuestCategoryGroupProps>) {
   const [isOpen, setIsOpen] = useState(() => defaultOpen);
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(title);

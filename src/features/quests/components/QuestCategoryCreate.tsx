@@ -1,12 +1,15 @@
 import { Plus, Check, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
-interface Props {
+interface QuestCategoryCreateProps {
   onSave: (title: string) => void;
   isPending?: boolean;
 }
 
-export default function QuestCategoryCreate({ onSave, isPending }: Props) {
+export default function QuestCategoryCreate({
+  onSave,
+  isPending,
+}: QuestCategoryCreateProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
