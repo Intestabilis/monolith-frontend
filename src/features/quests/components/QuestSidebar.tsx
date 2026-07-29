@@ -106,7 +106,7 @@ function QuestSidebar({
         )}
       </div>
 
-      <div className="flex-1 overflow-y-auto py-2 scrollbar-thin scrollbar-thumb-border-strong scrollbar-track-transparent pr-1">
+      <div className="flex-1 overflow-y-auto py-2 custom-scrollbar scrollbar-thumb-border-strong pr-1">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}

@@ -11,6 +11,8 @@ import CampaignLayout from "./layouts/CampaignLayout";
 import CampaignPage from "./pages/CampaignPage";
 import JoinCampaignPage from "./pages/JoinCampaignPage";
 import QuestboardPage from "./pages/QuestboardPage";
+import DMScreenPage from "./pages/DMScreenPage";
+import CampaignPagesContainer from "./pages/CampaignPagesContainer";
 
 function Router() {
   return (
@@ -32,11 +34,40 @@ function Router() {
       <Route element={<ProtectedAuthRoute />}>
         <Route element={<ProtectedCampaignRoute />}>
           <Route path="/campaigns/:campaignId" element={<CampaignLayout />}>
-            <Route index element={<CampaignPage></CampaignPage>} />
-            <Route path="questboard" element={<QuestboardPage />} />
-            <Route path="codex" element={<div>Кодекс (Заглушка)</div>} />
-            <Route path="dmscreen" element={<div>Ширма (Заглушка)</div>} />
-            <Route path="party" element={<div>Партія (Заглушка)</div>} />
+            {/* REVIEW maybe move CampaignPagesContainer into pages and not use there */}
+            <Route
+              index
+              element={
+                <CampaignPagesContainer>
+                  <CampaignPage />
+                </CampaignPagesContainer>
+              }
+            />
+            <Route
+              path="questboard"
+              element={
+                <CampaignPagesContainer>
+                  <QuestboardPage />
+                </CampaignPagesContainer>
+              }
+            />
+            <Route
+              path="codex"
+              element={
+                <CampaignPagesContainer>
+                  <div>Кодекс (Заглушка)</div>
+                </CampaignPagesContainer>
+              }
+            />
+            <Route path="dmscreen" element={<DMScreenPage />} />
+            <Route
+              path="party"
+              element={
+                <CampaignPagesContainer>
+                  <div>Партія (Заглушка)</div>
+                </CampaignPagesContainer>
+              }
+            />
           </Route>
         </Route>
       </Route>

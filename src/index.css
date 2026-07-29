@@ -87,6 +87,12 @@
   }
 }
 
+/* scrollbar */
+
+@utility custom-scrollbar {
+  @apply scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent;
+}
+
 /* GLOBAL CSS */
 
 /* Browser autofill background color fix */

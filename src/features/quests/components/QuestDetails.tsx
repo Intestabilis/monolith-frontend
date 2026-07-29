@@ -87,7 +87,7 @@ export function QuestDetails({
   return (
     <div
       key={questId}
-      className="flex flex-col h-full w-full min-w-0 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent pr-2"
+      className="flex flex-col h-full w-full min-w-0 overflow-y-auto overflow-x-hidden custom-scrollbar pr-2"
     >
       {isMaster && !isEditing && (
         <div className="flex justify-end mb-4 shrink-0 gap-2">
