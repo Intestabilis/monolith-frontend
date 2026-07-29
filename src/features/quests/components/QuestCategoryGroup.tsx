@@ -86,7 +86,7 @@ function QuestCategoryGroup({
           )}
         </div>
 
-        <div className="absolute left-0 right-0 flex justify-center pointer-events-none px-16">
+        <div className="absolute left-0 right-0 flex justify-center pointer-events-none px-2">
           {isEditing ? (
             <input
               ref={inputRef}
@@ -101,7 +101,7 @@ function QuestCategoryGroup({
               className="pointer-events-auto bg-surface border-b-2 border-primary px-2 py-0 text-center font-heading font-bold text-sm tracking-widest uppercase text-text-selected outline-none w-full max-w-62.5"
             />
           ) : (
-            <h3 className="font-heading font-bold text-sm tracking-widest uppercase text-text-selected truncate w-full max-w-62.5 text-center">
+            <h3 className="font-heading font-bold text-sm tracking-widest uppercase text-text-selected truncate w-full text-center">
               {title}
             </h3>
           )}

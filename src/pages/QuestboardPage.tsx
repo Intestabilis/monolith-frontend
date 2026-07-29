@@ -51,7 +51,7 @@ function QuestboardPage() {
 
       <main className="flex-1 relative h-full min-w-0">
         {creationCategoryId !== null && isMaster ? (
-          <div className="h-full w-full bg-surface/50 border-2 border-border-strong shadow-[4px_4px_0px_var(--color-background-contrast)] p-6 lg:p-10 overflow-hidden flex flex-col">
+          <div className="h-full w-full bg-surface/50 border-2 border-border-strong shadow-[4px_4px_0px_var(--color-background-contrast)] p-6 lg:p-10 overflow-hidden flex flex-col custom-scrollbar">
             <QuestForm
               campaignId={campaignId}
               isCreateMode={true}

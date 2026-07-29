@@ -60,7 +60,7 @@ function CampaignTitleEdit({
 
   if (isEditing && isMaster) {
     return (
-      <div className="w-full max-w-3xl">
+      <div className="w-full">
         <input
           autoFocus
           value={titleValue}
