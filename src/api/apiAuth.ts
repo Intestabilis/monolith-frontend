@@ -39,3 +39,9 @@ export async function getAuthStatus(): Promise<UserStatusDTO | null> {
   const { data } = await apiClient.get("/auth/status");
   return data;
 }
+
+export async function activateAccount(activationLink: string) {
+  const { data } = await apiClient.post(`/auth/activate/${activationLink}`);
+  tokenService.set(data.accessToken);
+  return data;
+}

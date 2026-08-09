@@ -13,6 +13,7 @@ import JoinCampaignPage from "./pages/JoinCampaignPage";
 import QuestboardPage from "./pages/QuestboardPage";
 import DMScreenPage from "./pages/DMScreenPage";
 import CampaignPagesContainer from "./pages/CampaignPagesContainer";
+import VerificationPage from "./pages/VerificationPage";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
         <Route path="/" element={<App />} />
         {/* <Route path="/about" element={<div />} /> */}
         {/* CHANGE add hero page here etc. */}
+        <Route path="/verify" element={<VerificationPage />} />
         <Route element={<GuestRoute />}>
           <Route path="/auth" element={<AuthPage />} />
         </Route>
