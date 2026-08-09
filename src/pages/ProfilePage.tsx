@@ -7,10 +7,18 @@ import { CampaignList } from "../features/campaigns/components/CampaignList";
 import { useCampaignsList } from "../features/campaigns/hooks/useCampaignsList";
 import { useProfile } from "../features/user/useProfile";
 import CreateCampaignModal from "../features/campaigns/components/CreateCampaignModal";
+import { useResendActivation } from "../features/auth/hooks/useResendActivation";
+import Button from "../components/ui/Button";
 
 function ProfilePage() {
   const { user: authData } = useAuth();
   const { user, isPending: isUserPending } = useProfile(authData?.id);
+
+  const {
+    resendActivation,
+    isPending: isResending,
+    isSuccess: isResendSuccess,
+  } = useResendActivation();
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -30,7 +38,6 @@ function ProfilePage() {
   // IMPLEMENT REVIEW probably create "button" will just create a new campaign and reditect to info page instead
   function handleCreateCampaignClick() {
     setIsCreateModalOpen(true);
-    console.log("Create campaign");
   }
 
   return (
@@ -40,7 +47,6 @@ function ProfilePage() {
           <h1 className="font-gothic-title text-3xl tracking-wide text-text-selected">
             Профіль
           </h1>
-          {/* <Badge>Status: Active</Badge> */}
         </div>
 
         {isUserPending ? (
@@ -50,7 +56,7 @@ function ProfilePage() {
           </div>
         ) : user ? (
           <div className="grid grid-cols-1 gap-6 font-mono text-sm md:grid-cols-3">
-            <div className="flex flex-col gap-1.5 border-border-muted pr-4 md:border-r">
+            <div className="flex flex-col gap-3 border-border-muted pr-4 md:border-r">
               <p>
                 <span className="text-text-muted">НІКНЕЙМ:</span>{" "}
                 <span className="font-bold text-text-selected">
@@ -61,22 +67,50 @@ function ProfilePage() {
                 <span className="text-text-muted">ПОШТА:</span>{" "}
                 <span className="text-text-primary">{user.email}</span>
               </p>
+              <div>
+                <p className="flex gap-2 items-center">
+                  <span className=" text-text-muted">СТАТУС АКАУНТУ:</span>
+                  <Badge variant={`${user.isActivated ? "success" : "danger"}`}>
+                    {`${user.isActivated ? "✓ АКТИВОВАНИЙ" : "✗ НЕАКТИВОВАНИЙ"}`}
+                  </Badge>
+                </p>
+
+                {!user.isActivated && (
+                  <div className="space-y-3 mt-4">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="text-xs"
+                      onClick={() => resendActivation()}
+                      disabled={isResending || isResendSuccess}
+                    >
+                      {isResending
+                        ? "Надсилання..."
+                        : isResendSuccess
+                          ? "Посилання надіслано"
+                          : "Надіслати посилання повторно"}
+                    </Button>
+
+                    {isResendSuccess && (
+                      <p className="text-xs text-success">
+                        Нове посилання надіслано, перевірте свою поштову
+                        скриньку.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="flex flex-col gap-1.5 border-border-muted px-4 md:border-r">
+            {/* CHANGE LATER TO ACTUAL BIO AND AVATAR + EDITING FUNCTIONALITY */}
+            <div className="flex flex-col gap-2 border-border-muted px-4 md:border-r">
+              <span className="mb-1 block text-text-muted">БІО:</span>
+
               <p>
-                <span className="text-text-muted">СТАТУС ПРОФІЛЯ:</span>{" "}
-                {user.isActivated ? (
-                  <Badge variant="success">✓ ПІДТВЕРДЖЕНО</Badge>
-                ) : (
-                  <Badge variant="danger">✗ НЕАКТИВОВАНО</Badge>
-                )}
-              </p>
-              <p>
-                <span className="text-text-muted">ID:</span>{" "}
+                {/* <span className="text-text-muted">ID:</span>{" "}
                 <span className="break-all text-xs text-border-strong">
                   {user.id}
-                </span>
+                </span> */}
               </p>
             </div>
 

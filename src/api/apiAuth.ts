@@ -45,3 +45,8 @@ export async function activateAccount(activationLink: string) {
   tokenService.set(data.accessToken);
   return data;
 }
+
+export async function resendActivation() {
+  const { data } = await apiClient.post("/auth/resend-activation");
+  return data;
+}

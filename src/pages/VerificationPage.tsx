@@ -47,7 +47,7 @@ function VerificationPage() {
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card variant="default" className="text-center max-w-md w-full">
-        <h2 className="font-osr-title text-2xl text-text-selected mb-4 border-b-2 border-border-strong pb-4">
+        <h2 className="font-gothic-title text-2xl text-text-selected mb-4 border-b-2 border-border-strong pb-4">
           Підтвердження реєстрації
         </h2>
 
