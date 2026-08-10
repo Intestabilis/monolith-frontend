@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, type ReactNode } from "react";
 import { cn } from "../utils/cn";
 import Input, { type InputProps } from "./ui/Input";
 import Label from "./ui/Label";
@@ -7,10 +7,12 @@ export interface FormInputProps extends InputProps {
   label?: string;
   error?: string;
   containerClassName?: string;
+  labelAction?: ReactNode;
 }
 
 function FormInput({
   label,
+  labelAction,
   error,
   id,
   className,
@@ -26,11 +28,15 @@ function FormInput({
     <div
       className={cn("flex flex-col space-y-1.5 text-left", containerClassName)}
     >
-      {label && (
-        <Label htmlFor={inputId} variant={hasError ? "error" : "default"}>
-          {label}
-        </Label>
-      )}
+      <div className="mb-1 flex items-baseline justify-between">
+        {label && (
+          <Label htmlFor={inputId} variant={hasError ? "error" : "default"}>
+            {label}
+          </Label>
+        )}
+
+        {labelAction && <div>{labelAction}</div>}
+      </div>
 
       <Input
         id={inputId}

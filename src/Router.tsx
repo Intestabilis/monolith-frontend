@@ -14,6 +14,7 @@ import QuestboardPage from "./pages/QuestboardPage";
 import DMScreenPage from "./pages/DMScreenPage";
 import CampaignPagesContainer from "./pages/CampaignPagesContainer";
 import VerificationPage from "./pages/VerificationPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
         {/* <Route path="/about" element={<div />} /> */}
         {/* CHANGE add hero page here etc. */}
         <Route path="/verify" element={<VerificationPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route element={<GuestRoute />}>
           <Route path="/auth" element={<AuthPage />} />
         </Route>

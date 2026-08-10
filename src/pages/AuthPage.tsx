@@ -1,12 +1,15 @@
 import { useState } from "react";
-import LoginForm from "../components/LoginForm";
-import RegisterForm from "../components/RegisterForm";
+import LoginForm from "../features/auth/components/LoginForm";
+import RegisterForm from "../features/auth/components/RegisterForm";
+import ForgotPasswordForm from "../features/auth/components/ForgotPasswordForm";
+
+export type AuthMode = "login" | "register" | "forgot";
 
 function AuthPage() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState<AuthMode>("login");
 
-  function toggleForm() {
-    setIsLogin((prev) => !prev);
+  function changeMode(newMode: AuthMode) {
+    setMode(newMode);
   }
 
   return (
@@ -17,18 +20,17 @@ function AuthPage() {
             OSR Monolith
           </h1>
           <p className="mt-2 font-mono text-sm text-text-muted">
-            {isLogin
-              ? "З поверненням!"
-              : "Якийсь мотивуючий зареєструватись і юзати сайт текст"}
+            {mode === "login" && "З поверненням!"}
+            {/* CHANGE do better motivational text fr */}
+            {mode === "register" &&
+              "Почніть використовувати Monolith вже зараз!"}
+            {mode === "forgot" && "Відновлення доступу"}
           </p>
         </div>
 
-        {/* Рендеримо відповідну форму */}
-        {isLogin ? (
-          <LoginForm onToggle={toggleForm} />
-        ) : (
-          <RegisterForm onToggle={toggleForm} />
-        )}
+        {mode === "login" && <LoginForm onToggle={changeMode} />}
+        {mode === "register" && <RegisterForm onToggle={changeMode} />}
+        {mode === "forgot" && <ForgotPasswordForm onToggle={changeMode} />}
       </div>
     </div>
   );

@@ -1,14 +1,18 @@
 import { useForm } from "react-hook-form";
-import { useLogin } from "../features/auth/hooks/useLogin";
-import { LoginUserSchema, type LoginUserDTO } from "../schemas/user.schema";
+import { useLogin } from "../hooks/useLogin";
+import {
+  LoginUserSchema,
+  type LoginUserDTO,
+} from "../../../schemas/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "./ui/Button";
-import Card from "./ui/Card";
-import FormInput from "./FormInput";
-import Alert from "./ui/Alert";
+import Button from "../../../components/ui/Button";
+import Card from "../../../components/ui/Card";
+import FormInput from "../../../components/FormInput";
+import Alert from "../../../components/ui/Alert";
+import type { AuthMode } from "../../../pages/AuthPage";
 
 interface LoginFormProps {
-  onToggle: () => void;
+  onToggle: (mode: AuthMode) => void;
 }
 
 function LoginForm({ onToggle }: LoginFormProps) {
@@ -26,13 +30,11 @@ function LoginForm({ onToggle }: LoginFormProps) {
 
   return (
     <Card variant="default" className="w-full">
-      <h2 className="mb-6 border-b-2 border-border-strong pb-4 font-osr-title text-2xl text-text-selected text-center">
+      <h2 className="mb-6 border-b-2 border-border-strong pb-4 font-gothic-title text-2xl text-text-selected text-center">
         Вхід
       </h2>
 
-      {/* REVIEW this and Register form - maybe should create a FormInput component and reuse it, through I'm not sure because of possible*/}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Поле Email */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-1">
         <FormInput
           label="Електронна пошта"
           placeholder="john@dnd.com"
@@ -42,7 +44,6 @@ function LoginForm({ onToggle }: LoginFormProps) {
           {...register("email")}
         />
 
-        {/* Поле Пароль */}
         <FormInput
           label="Пароль"
           placeholder="••••••••"
@@ -50,6 +51,15 @@ function LoginForm({ onToggle }: LoginFormProps) {
           disabled={isPending}
           error={errors.password?.message}
           {...register("password")}
+          labelAction={
+            <button
+              type="button"
+              onClick={() => onToggle("forgot")}
+              className="font-mono text-xs text-text-muted underline decoration-transparent transition-all hover:text-text-selected hover:decoration-text-selected focus:outline-none"
+            >
+              Забули пароль?
+            </button>
+          }
         />
 
         {/* {error && (
@@ -75,7 +85,7 @@ function LoginForm({ onToggle }: LoginFormProps) {
         <span>Не маєте акаунту? </span>
         <button
           type="button"
-          onClick={onToggle}
+          onClick={() => onToggle("register")}
           className="font-bold text-text-primary underline decoration-text-muted transition-all hover:text-text-selected hover:decoration-text-selected"
         >
           Зареєструватися

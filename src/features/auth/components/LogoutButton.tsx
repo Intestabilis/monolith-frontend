@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
-import { useLogout } from "../features/auth/hooks/useLogout";
-import Button from "./ui/Button";
+import Button from "../../../components/ui/Button";
+import { useLogout } from "../hooks/useLogout";
 
 interface LogoutButtonProps {
   loadingText?: string;

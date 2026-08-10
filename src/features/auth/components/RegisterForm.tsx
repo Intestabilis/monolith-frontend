@@ -1,14 +1,18 @@
 import { useForm } from "react-hook-form";
-import { CreateUserSchema, type CreateUserDTO } from "../schemas/user.schema";
+import {
+  CreateUserSchema,
+  type CreateUserDTO,
+} from "../../../schemas/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRegister } from "../features/auth/hooks/useRegister";
-import Button from "./ui/Button";
-import Card from "./ui/Card";
-import Alert from "./ui/Alert";
-import FormInput from "./FormInput";
+import { useRegister } from "../hooks/useRegister";
+import Button from "../../../components/ui/Button";
+import Card from "../../../components/ui/Card";
+import Alert from "../../../components/ui/Alert";
+import FormInput from "../../../components/FormInput";
+import type { AuthMode } from "../../../pages/AuthPage";
 
 interface RegisterFormProps {
-  onToggle: () => void;
+  onToggle: (mode: AuthMode) => void;
 }
 
 function RegisterForm({ onToggle }: RegisterFormProps) {
@@ -26,11 +30,11 @@ function RegisterForm({ onToggle }: RegisterFormProps) {
 
   return (
     <Card variant="default" className="w-full">
-      <h2 className="mb-6 border-b-2 border-border-strong pb-4 font-osr-title text-2xl text-text-selected text-center">
+      <h2 className="mb-6 border-b-2 border-border-strong pb-4 font-gothic-title text-2xl text-text-selected text-center">
         Реєстрація
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-1">
         <FormInput
           label="Нікнейм"
           placeholder="John Pork"
@@ -85,7 +89,7 @@ function RegisterForm({ onToggle }: RegisterFormProps) {
         <span>Вже маєте акаунт? </span>
         <button
           type="button"
-          onClick={onToggle}
+          onClick={() => onToggle("login")}
           className="font-bold text-text-primary underline decoration-text-muted transition-all hover:text-text-selected hover:decoration-text-selected"
         >
           Повернутися до входу

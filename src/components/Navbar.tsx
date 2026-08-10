@@ -1,10 +1,10 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { useProfile } from "../features/user/useProfile";
 import { cn } from "../utils/cn";
 import Badge from "./ui/Badge";
 import { buttonVariants } from "./ui/Button";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "../features/auth/components/LogoutButton";
 
 function Navbar() {
   const { user, isPending } = useAuth();
@@ -14,16 +14,18 @@ function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full grid grid-cols-[1fr_auto_1fr] items-center border-border-strong bg-surface px-8 py-4 shadow-sm">
       <div className="flex items-center gap-2 justify-start">
-        <span className="font-gothic-title text-2xl tracking-wide text-text-selected">
-          MONOLITH
-        </span>
+        <Link to="/">
+          <span className="font-gothic-title text-2xl tracking-wide text-text-selected">
+            MONOLITH
+          </span>
+        </Link>
         <Badge variant="default" className="hidden sm:inline-flex">
           BETA
         </Badge>
       </div>
 
       <div className="hidden items-center gap-6 font-heading text-sm font-bold uppercase tracking-wider text-text-muted md:flex">
-        <NavLink
+        {/* <NavLink
           to="/about"
           className={({ isActive }) =>
             cn(
@@ -35,7 +37,7 @@ function Navbar() {
           Something
         </NavLink>
         <NavLink
-          to="/rules"
+          to="/welcome"
           className={({ isActive }) =>
             cn(
               "hover:text-text-primary transition-colors",
@@ -43,8 +45,8 @@ function Navbar() {
             )
           }
         >
-          About
-        </NavLink>
+          Dashboard
+        </NavLink> */}
       </div>
 
       <div className="flex items-center gap-4 justify-end">
