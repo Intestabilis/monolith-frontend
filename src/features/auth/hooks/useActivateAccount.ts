@@ -3,7 +3,7 @@ import { activateAccount as activateAccountApi } from "../../../api/apiAuth";
 import { tokenService } from "../../../utils/tokenService";
 import { useNavigate } from "react-router";
 
-export function useActivateAccount(userId: string | undefined) {
+export function useActivateAccount() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export function useActivateAccount(userId: string | undefined) {
           if (!oldData) return oldData;
           return { ...oldData, isActivated: true };
         });
-        queryClient.invalidateQueries({ queryKey: ["user-profile", userId] });
+        queryClient.invalidateQueries({ queryKey: ["user-profile", "me"] });
       } else {
         tokenService.clear();
         queryClient.clear();

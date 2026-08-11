@@ -21,6 +21,7 @@ export function useLogin() {
         id: data.user.id,
         isActivated: data.user.isActivated,
       });
+      queryClient.invalidateQueries({ queryKey: ["user-profile", "me"] });
     },
   });
 

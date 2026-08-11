@@ -3,18 +3,13 @@ import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import { useActivateAccount } from "../features/auth/hooks/useActivateAccount";
 import Alert from "../components/ui/Alert";
-import { useAuth } from "../features/auth/hooks/useAuth";
 
 function VerificationPage() {
   const [searchParams] = useSearchParams();
   const link = searchParams.get("link");
   const navigate = useNavigate();
 
-  // REVIEW useAuth there - it shouldn't cause any errors, but doesn't look as a clearest solution to me
-  const { user } = useAuth();
-  const { activateAccount, isPending, isSuccess, error } = useActivateAccount(
-    user?.id,
-  );
+  const { activateAccount, isPending, isSuccess, error } = useActivateAccount();
 
   console.log(error);
 

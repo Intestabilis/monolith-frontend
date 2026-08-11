@@ -1,10 +1,11 @@
 import z from "zod";
 
+// CHANGE SYNC IT WITH BACKEND SCHEMAS AND REVIEW ALL USER SCHEMAS IN GENERAL
+
 const UserSchema = z.object({
   email: z.email(),
   username: z.string().min(6).max(20),
   password: z.string().min(3).max(20),
-  avatarUrl: z.url().nullable().optional(),
 });
 
 export const CreateUserSchema = UserSchema.extend({
@@ -22,6 +23,21 @@ export const LoginUserSchema = UserSchema.omit({
 
 export type LoginUserDTO = z.infer<typeof LoginUserSchema>;
 
+export const UserProfileSchema = z.object({
+  avatarUrl: z.url().nullable().optional(),
+  bio: z.string().max(2000, "Опис занадто довгий").nullable().optional(),
+  pronouns: z.string().max(50, "Занадто довго").nullable().optional(),
+  timezone: z.string().max(100).nullable().optional(),
+  favoriteSystems: z.array(z.string()).nullable().optional(),
+  playstyles: z.array(z.string()).nullable().optional(),
+});
+
+export const UpdateProfileSchema = UserProfileSchema.omit({
+  avatarUrl: true,
+});
+
+export type UpdateProfileDTO = z.infer<typeof UpdateProfileSchema>;
+
 export const UserStatusSchema = z.object({
   id: z.string(),
   isActivated: z.boolean(),
@@ -33,17 +49,21 @@ export const UserInfoSchema = z
   .object({
     ...UserSchema.shape,
     ...UserStatusSchema.shape,
+    ...UserProfileSchema.shape,
   })
   .omit({ password: true });
 
 export type UserInfoDTO = z.infer<typeof UserInfoSchema>;
 
-export const CampaignMemberSchema = UserInfoSchema.omit({
-  email: true,
-}).extend({
+export const CampaignMemberSchema = z.object({
+  id: z.uuid(),
+  username: z.string(),
   joinedAt: z.iso.datetime(),
-  // characterName: z.string().optional(),
-  // characterClass: z.string().optional(),
+
+  avatarUrl: z.string().nullable().optional(),
+  pronouns: z.string().nullable().optional(),
+
+  // characterName: z.string().nullable().optional(),
 });
 
 export type CampaignMember = z.infer<typeof CampaignMemberSchema>;
