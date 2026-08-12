@@ -3,14 +3,17 @@ import Card from "../components/ui/Card";
 import Skeleton from "../components/ui/Skeleton";
 import { CampaignList } from "../features/campaigns/components/CampaignList";
 import { useCampaignsList } from "../features/campaigns/hooks/useCampaignsList";
-import { useProfile } from "../features/user/useProfile";
+import { useProfile } from "../features/user/hooks/useProfile";
 import CreateCampaignModal from "../features/campaigns/components/CreateCampaignModal";
 import { useResendActivation } from "../features/auth/hooks/useResendActivation";
 import Button from "../components/ui/Button";
 import UserProfileCard from "../features/user/components/UserProfileCard";
+import UpdateProfileForm from "../features/user/components/UpdateProfileForm";
 
 function ProfilePage() {
   const { user, isPending: isUserPending } = useProfile();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const {
     resendActivation,
@@ -45,24 +48,34 @@ function ProfilePage() {
           <h1 className="font-gothic-title text-2xl font-bold uppercase tracking-widest text-text-selected">
             Профіль
           </h1>
-          <Button variant="ghost" size="sm">
-            Редагувати
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsEditing((prev) => !prev)}
+          >
+            {!isEditing ? "Редагувати" : "Скасувати"}
           </Button>
         </div>
-
         {isUserPending ? (
           <div className="space-y-3">
             <Skeleton className="h-4 w-1/4" />
             <Skeleton className="h-4 w-1/3" />
           </div>
         ) : user ? (
-          <UserProfileCard
-            user={user}
-            isOwnProfile={true}
-            onResendActivation={() => resendActivation()}
-            isResending={isResending}
-            isResendSuccess={isResendSuccess}
-          />
+          isEditing ? (
+            <UpdateProfileForm
+              user={user}
+              onCancel={() => setIsEditing(false)}
+            />
+          ) : (
+            <UserProfileCard
+              user={user}
+              isOwnProfile={true}
+              onResendActivation={() => resendActivation()}
+              isResending={isResending}
+              isResendSuccess={isResendSuccess}
+            />
+          )
         ) : (
           <p className="font-mono text-danger">
             Не вдалося завантажити профіль користувача

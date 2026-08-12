@@ -1,6 +1,7 @@
 import Badge from "../../../components/ui/Badge";
 import Button from "../../../components/ui/Button";
 import type { UserInfoDTO } from "../../../schemas/user.schema";
+import { PLAYSTYLE_STYLES, SYSTEM_STYLES } from "../constants";
 
 interface UserProfileCardProps {
   user: UserInfoDTO;
@@ -24,13 +25,13 @@ function UserProfileCard({
       {/* CHANGE fr change fields + text colors for more bright for better contrast */}
       {/* REVIEW style choices like font in username, text-muted color, badge for pronouns etc. */}
       {/* BIO */}
-      <div className="flex flex-col md:col-span-2 md:pr-4">
+      <section className="flex flex-col md:col-span-2 md:pr-4">
         <div className="mb-6 flex gap-4 items-center">
           <h2 className="font-title font-bold uppercase text-2xl text-text-selected break-all">
             {user.username}
           </h2>
           {user.pronouns && (
-            <span className=" font-mono text-sm text-text-muted border border-border-muted px-2 py-0.5 whitespace-nowrap">
+            <span className="font-mono text-sm text-text-muted border border-border-muted px-2 py-1 whitespace-nowrap">
               {user.pronouns}
             </span>
           )}
@@ -45,7 +46,11 @@ function UserProfileCard({
             <div className="flex flex-wrap gap-2">
               {user.favoriteSystems && user.favoriteSystems.length > 0 ? (
                 user.favoriteSystems.map((system) => (
-                  <Badge key={system} variant="default">
+                  <Badge
+                    key={system}
+                    variant="default"
+                    className={SYSTEM_STYLES[system]}
+                  >
                     {system}
                   </Badge>
                 ))
@@ -59,12 +64,16 @@ function UserProfileCard({
 
           <div>
             <span className="mb-2 block font-mono text-xs uppercase text-text-muted">
-              Стиль гри:
+              Стилі гри:
             </span>
             <div className="flex flex-wrap gap-2">
               {user.playstyles && user.playstyles.length > 0 ? (
                 user.playstyles.map((style) => (
-                  <Badge key={style} variant="player">
+                  <Badge
+                    key={style}
+                    variant="default"
+                    className={PLAYSTYLE_STYLES[style]}
+                  >
                     {style}
                   </Badge>
                 ))
@@ -82,8 +91,8 @@ function UserProfileCard({
           <span className="mb-3 block font-mono text-xs uppercase text-text-muted">
             Про себе:
           </span>
-          <div className="prose prose-invert max-w-prose font-sans text-sm leading-relaxed text-text-primary">
-            {!user.bio ? (
+          <div className="font-sans text-sm prose prose-invert w-full max-w-full leading-relaxed text-text-primary">
+            {user.bio ? (
               <p className="whitespace-pre-wrap">{user.bio}</p>
             ) : (
               <p className="text-text-muted italic opacity-70">
@@ -92,10 +101,10 @@ function UserProfileCard({
             )}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Avatar + private info (REVIEW think about moving GMT from here? since it should be public info to show people your timezone to schedule games) */}
-      <div className="flex flex-col gap-6 md:border-l-2 md:border-border-muted md:pl-8">
+      <section className="flex flex-col gap-6 md:border-l-2 md:border-border-muted md:pl-8">
         <div className="aspect-square w-full border-2 border-border-strong bg-background-muted flex items-center justify-center overflow-hidden">
           {user.avatarUrl ? (
             <img
@@ -162,7 +171,7 @@ function UserProfileCard({
             </div>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

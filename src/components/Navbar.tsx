@@ -1,15 +1,15 @@
 import { Link, NavLink } from "react-router";
 import { useAuth } from "../features/auth/hooks/useAuth";
-import { useProfile } from "../features/user/useProfile";
+import { useProfile } from "../features/user/hooks/useProfile";
 import { cn } from "../utils/cn";
 import Badge from "./ui/Badge";
 import { buttonVariants } from "./ui/Button";
 import LogoutButton from "../features/auth/components/LogoutButton";
 
 function Navbar() {
-  const { user, isPending } = useAuth();
+  const { isPending } = useAuth();
 
-  const { user: profile, isPending: isPendingInfo } = useProfile(user?.id);
+  const { user: profile, isPending: isPendingInfo } = useProfile();
 
   return (
     <nav className="sticky top-0 z-50 w-full grid grid-cols-[1fr_auto_1fr] items-center border-border-strong bg-surface px-8 py-4 shadow-sm">

@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import SidebarItem from "./SidebarItem";
-import { useAuth } from "../features/auth/hooks/useAuth";
-import { useProfile } from "../features/user/useProfile";
+import { useProfile } from "../features/user/hooks/useProfile";
 import { useState } from "react";
 import { cn } from "../utils/cn";
 import Button from "./ui/Button";
@@ -11,8 +10,7 @@ import { ChevronRight, MoveLeft } from "lucide-react";
 import FantasyIcon from "./icons/FantasyIcon";
 
 function Sidebar({ campaignTitle }: { campaignTitle: string }) {
-  const { user } = useAuth();
-  const { user: profile } = useProfile(user?.id);
+  const { user: profile } = useProfile();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (

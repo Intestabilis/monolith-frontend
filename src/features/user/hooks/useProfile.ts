@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchProfile } from "../../api/apiUsers";
+import { fetchProfile } from "../../../api/apiUsers";
 
 export function useProfile() {
   const { data: user, isPending } = useQuery({
