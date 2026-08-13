@@ -1,3 +1,4 @@
+import FantasyIcon from "../../../components/icons/FantasyIcon";
 import Badge from "../../../components/ui/Badge";
 import Button from "../../../components/ui/Button";
 import type { UserInfoDTO } from "../../../schemas/user.schema";
@@ -22,7 +23,6 @@ function UserProfileCard({
 }: UserProfileCardProps) {
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-      {/* CHANGE fr change fields + text colors for more bright for better contrast */}
       {/* REVIEW style choices like font in username, text-muted color, badge for pronouns etc. */}
       {/* BIO */}
       <section className="flex flex-col md:col-span-2 md:pr-4">
@@ -111,12 +111,11 @@ function UserProfileCard({
               src={user.avatarUrl}
               alt={`Аватар ${user.username}`}
               // REVIEW styles + avatar in general after uploading implementation
-              className="h-full w-full object-cover grayscale contrast-125 transition-all hover:grayscale-0"
+              className="h-full w-full object-cover"
             />
           ) : (
-            <div className="text-center opacity-40 grayscale filter">
-              {/* CHANGE use some silly fantasy icon like for other things*/}
-              <span className="mb-2 block text-4xl">👤</span>
+            <div className="flex flex-col items-center gap-2 opacity-40 grayscale filter">
+              <FantasyIcon name="behold" className="h-12 w-12" />
               <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
                 Зображення відсутнє
               </p>

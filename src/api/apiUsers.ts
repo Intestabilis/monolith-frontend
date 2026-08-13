@@ -15,3 +15,18 @@ export async function updateProfile(
   const { data } = await apiClient.patch<UserInfoDTO>("/users/me/", payload);
   return data;
 }
+
+export async function uploadAvatar(file: File): Promise<UserInfoDTO> {
+  const formData = new FormData();
+  formData.append("image", file);
+  const { data } = await apiClient.post<UserInfoDTO>(
+    "/upload/me/avatar",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return data;
+}

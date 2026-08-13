@@ -18,6 +18,11 @@ import {
   PLAYSTYLE_STYLES,
 } from "../constants";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
+import { useUploadAvatar } from "../hooks/useUploadAvatar";
+import { useEffect, useState } from "react";
+import Loader from "../../../components/ui/Loader";
+import toast from "react-hot-toast";
+import FantasyIcon from "../../../components/icons/FantasyIcon";
 
 interface UpdateProfileFormProps {
   user: UserInfoDTO;
@@ -25,7 +30,13 @@ interface UpdateProfileFormProps {
 }
 
 function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const { updateProfile, isPending } = useUpdateProfile();
+  const { uploadAvatar, isPending: isAvatarUploading } = useUploadAvatar();
+
+  const isSaving = isPending || isAvatarUploading;
 
   const {
     register,
@@ -43,12 +54,52 @@ function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
     },
   });
 
-  const onSubmit = async (data: UpdateProfileDTO) => {
-    updateProfile(data, {
-      onSuccess: onCancel,
-    });
-    console.log("Збереження:", data);
-  };
+  // clearing local avatar file on changing picture
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  function handleAvatarSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error(
+        `Помилка при завантаженні зображення: Розмір файлу не має перевищувати 2 МБ`,
+      );
+      return;
+    }
+
+    setAvatarFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  }
+
+  function onSubmit(data: UpdateProfileDTO) {
+    if (avatarFile && isDirty) {
+      uploadAvatar(avatarFile, {
+        onSuccess: () => {
+          updateProfile(data, { onSuccess: handleCancel });
+        },
+      });
+    } else if (avatarFile) {
+      uploadAvatar(avatarFile, { onSuccess: handleCancel });
+    } else if (isDirty) {
+      updateProfile(data, { onSuccess: handleCancel });
+    } else {
+      handleCancel();
+    }
+  }
+
+  function handleCancel() {
+    setAvatarFile(null);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
+    onCancel();
+  }
+
+  const displayAvatar = previewUrl || user.avatarUrl;
 
   return (
     <form
@@ -130,19 +181,42 @@ function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
 
       {/* RIGHT SECTION */}
       <section className="flex flex-col gap-6 md:border-l-2 md:border-border-muted md:pl-8">
-        <div className="aspect-square w-full border-2 border-border-strong bg-background-muted flex items-center justify-center overflow-hidden">
-          {user.avatarUrl ? (
+        <div className="relative aspect-square w-full border-2 border-border-strong bg-background-contrast flex items-center justify-center overflow-hidden group cursor-pointer transition-colors hover:border-primary">
+          <label
+            htmlFor="avatar-upload"
+            className="absolute inset-0 z-10 cursor-pointer"
+            title="Змінити аватар"
+          >
+            <input
+              id="avatar-upload"
+              type="file"
+              accept="image/jpeg, image/png, image/webp"
+              className="hidden"
+              onChange={handleAvatarSelect}
+              disabled={isSaving}
+            />
+          </label>
+
+          {displayAvatar ? (
             <img
-              src={user.avatarUrl}
+              src={displayAvatar}
               alt="Аватар"
-              className="h-full w-full object-cover grayscale contrast-125 opacity-50"
+              className="h-full w-full object-cover transition-all contrast-125 opacity-70 group-hover:opacity-100"
             />
           ) : (
-            <div className="text-center opacity-40 grayscale filter">
-              <span className="mb-2 block text-4xl">👤</span>
+            <div className="flex flex-col items-center gap-2 opacity-40 grayscale filter transition-opacity group-hover:opacity-80">
+              <FantasyIcon name="behold" className="h-12 w-12" />
               <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
-                Зображення відсутнє
+                Натисніть для
+                <br />
+                завантаження
               </p>
+            </div>
+          )}
+
+          {isSaving && (
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/50 pointer-events-none">
+              <Loader variant="d20" size="md" text="Збереження..." />
             </div>
           )}
         </div>
@@ -192,13 +266,13 @@ function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
 
         <Button
           type="submit"
-          variant={`${isDirty ? "primary" : "default"}`}
+          variant={`${isDirty || avatarFile ? "primary" : "default"}`}
           className="w-full"
-          disabled={isPending || !isDirty}
+          disabled={isSaving || (!isDirty && !avatarFile)}
         >
-          {isPending
+          {isSaving
             ? "Збереження..."
-            : isDirty
+            : isDirty || avatarFile
               ? "Зберегти зміни"
               : "Збережено"}
         </Button>
