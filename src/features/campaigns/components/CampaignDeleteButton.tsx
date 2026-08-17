@@ -36,7 +36,7 @@ function CampaignDeleteButton({
             event.stopPropagation();
             setIsOpen(true);
           }}
-          className="absolute top-4 right-4 z-30 border-2 border-border-strong bg-surface p-2 text-text-muted hover:text-danger hover:border-danger transition-all opacity-0 group-hover/hero:opacity-100 shadow-[2px_2px_0px_var(--color-border-strong)]"
+          className="absolute top-4 right-4 z-30 border-2 border-border-strong bg-surface p-2 text-text-muted hover:text-danger hover:border-danger transition-all opacity-0 group-hover/hero:opacity-100"
         >
           <Trash2 size="16" />
         </button>

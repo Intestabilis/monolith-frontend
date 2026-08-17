@@ -19,10 +19,13 @@ import {
 } from "../constants";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
 import { useUploadAvatar } from "../hooks/useUploadAvatar";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Loader from "../../../components/ui/Loader";
 import toast from "react-hot-toast";
 import FantasyIcon from "../../../components/icons/FantasyIcon";
+import type { Area } from "react-easy-crop";
+import { getCroppedImage } from "../../../utils/getCroppedImage";
+import Cropper from "react-easy-crop";
 
 interface UpdateProfileFormProps {
   user: UserInfoDTO;
@@ -30,13 +33,15 @@ interface UpdateProfileFormProps {
 }
 
 function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
   const { updateProfile, isPending } = useUpdateProfile();
   const { uploadAvatar, isPending: isAvatarUploading } = useUploadAvatar();
 
   const isSaving = isPending || isAvatarUploading;
+
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
   const {
     register,
@@ -57,34 +62,48 @@ function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
   // clearing local avatar file on changing picture
   useEffect(() => {
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (imageToCrop) URL.revokeObjectURL(imageToCrop);
     };
-  }, [previewUrl]);
+  }, [imageToCrop]);
 
   function handleAvatarSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error(
-        `Помилка при завантаженні зображення: Розмір файлу не має перевищувати 2 МБ`,
-      );
-      return;
-    }
-
-    setAvatarFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    // reset crop/zoom after new file selection
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setImageToCrop(URL.createObjectURL(file));
+    e.target.value = "";
   }
 
-  function onSubmit(data: UpdateProfileDTO) {
-    if (avatarFile && isDirty) {
-      uploadAvatar(avatarFile, {
-        onSuccess: () => {
-          updateProfile(data, { onSuccess: handleCancel });
-        },
-      });
-    } else if (avatarFile) {
-      uploadAvatar(avatarFile, { onSuccess: handleCancel });
+  const onCropComplete = useCallback(
+    (_croppedArea: Area, croppedPixels: Area) => {
+      setCroppedAreaPixels(croppedPixels);
+    },
+    [],
+  );
+
+  async function onSubmit(data: UpdateProfileDTO) {
+    if (imageToCrop && croppedAreaPixels) {
+      try {
+        const croppedFile = await getCroppedImage(
+          imageToCrop,
+          croppedAreaPixels,
+        );
+
+        uploadAvatar(croppedFile, {
+          onSuccess: () => {
+            if (isDirty) {
+              updateProfile(data, { onSuccess: handleCancel });
+            } else {
+              handleCancel();
+            }
+          },
+        });
+      } catch (error) {
+        toast.error(`Помилка створення зображення: ${error}`);
+      }
     } else if (isDirty) {
       updateProfile(data, { onSuccess: handleCancel });
     } else {
@@ -93,13 +112,11 @@ function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
   }
 
   function handleCancel() {
-    setAvatarFile(null);
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(null);
+    if (imageToCrop) URL.revokeObjectURL(imageToCrop);
+    setImageToCrop(null);
+    setCroppedAreaPixels(null);
     onCancel();
   }
-
-  const displayAvatar = previewUrl || user.avatarUrl;
 
   return (
     <form
@@ -182,36 +199,58 @@ function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
       {/* RIGHT SECTION */}
       <section className="flex flex-col gap-6 md:border-l-2 md:border-border-muted md:pl-8">
         <div className="relative aspect-square w-full border-2 border-border-strong bg-background-contrast flex items-center justify-center overflow-hidden group cursor-pointer transition-colors hover:border-primary">
-          <label
-            htmlFor="avatar-upload"
-            className="absolute inset-0 z-10 cursor-pointer"
-            title="Змінити аватар"
-          >
-            <input
-              id="avatar-upload"
-              type="file"
-              accept="image/jpeg, image/png, image/webp"
-              className="hidden"
-              onChange={handleAvatarSelect}
-              disabled={isSaving}
-            />
-          </label>
-
-          {displayAvatar ? (
-            <img
-              src={displayAvatar}
-              alt="Аватар"
-              className="h-full w-full object-cover transition-all contrast-125 opacity-70 group-hover:opacity-100"
+          {imageToCrop ? (
+            // Cropper
+            <Cropper
+              image={imageToCrop}
+              crop={crop}
+              zoom={zoom}
+              zoomSpeed={0.2}
+              aspect={1}
+              showGrid={false}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropComplete}
+              style={{
+                containerStyle: {
+                  background: "var(--color-background-contrast)",
+                },
+              }}
             />
           ) : (
-            <div className="flex flex-col items-center gap-2 opacity-40 grayscale filter transition-opacity group-hover:opacity-80">
-              <FantasyIcon name="behold" className="h-12 w-12" />
-              <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
-                Натисніть для
-                <br />
-                завантаження
-              </p>
-            </div>
+            <>
+              <label
+                htmlFor="avatar-upload"
+                className="absolute inset-0 z-10 cursor-pointer"
+                title="Змінити аватар"
+              >
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/jpeg, image/png, image/webp"
+                  className="hidden"
+                  onChange={handleAvatarSelect}
+                  disabled={isSaving}
+                />
+              </label>
+
+              {user.avatarUrl ? (
+                <img
+                  src={user.avatarUrl}
+                  alt="Аватар"
+                  className="h-full w-full object-cover transition-all contrast-125 opacity-70 group-hover:opacity-100"
+                />
+              ) : (
+                <div className="flex flex-col items-center gap-2 opacity-40 grayscale filter transition-opacity group-hover:opacity-80">
+                  <FantasyIcon name="behold" className="h-12 w-12" />
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
+                    Натисніть для
+                    <br />
+                    завантаження
+                  </p>
+                </div>
+              )}
+            </>
           )}
 
           {isSaving && (
@@ -266,13 +305,13 @@ function UpdateProfileForm({ user, onCancel }: UpdateProfileFormProps) {
 
         <Button
           type="submit"
-          variant={`${isDirty || avatarFile ? "primary" : "default"}`}
+          variant={`${isDirty || imageToCrop ? "primary" : "default"}`}
           className="w-full"
-          disabled={isSaving || (!isDirty && !avatarFile)}
+          disabled={isSaving || (!isDirty && !imageToCrop)}
         >
           {isSaving
             ? "Збереження..."
-            : isDirty || avatarFile
+            : isDirty || imageToCrop
               ? "Зберегти зміни"
               : "Збережено"}
         </Button>

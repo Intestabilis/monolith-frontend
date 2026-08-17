@@ -16,7 +16,11 @@ interface MemberBadgeProps {
 function getOptimizedAvatar(url?: string | null) {
   if (!url) return null;
   if (url.includes("cloudinary.com")) {
-    return url.replace("/upload/", "/upload/w_80,h_80,c_fill,q_auto,f_auto/");
+    // const cleanUrl = url.replace(/\.[a-z0-9]+$/i, "");
+    console.log(url.replace(/(\/upload\/(?:v\d+\/)?)/, "$1w_80,h_80,c_fill/"));
+    return url.replace(/(\/upload\/(?:v\d+\/)?)/, "$1w_80,h_80,c_fill/");
+    // return cleanUrl.replace(/(\/upload\/(?:v\d+\/)?)/, "$1w_80,h_80,c_limit/");
+    // return cleanUrl.replace("/upload/", "/upload/a_0/");
   }
   return url;
 }
@@ -28,7 +32,10 @@ function MemberBadge({
   showRemoveButton,
   onRemove,
 }: MemberBadgeProps) {
-  const optimizedAvatar = getOptimizedAvatar(avatarUrl);
+  // const optimizedAvatar = getOptimizedAvatar(avatarUrl);
+  // REVIEW There's some error with cloudinary transformations and for some reason everything I try doesn't work and I get 404, so I'll return to this later
+  const optimizedAvatar = avatarUrl;
+
   // kinda confusing since we're using "isMaster" mostly as a check for permissions, but there it's a check of any given user role (not current logged user)
   const isMaster = role === "master";
   return (

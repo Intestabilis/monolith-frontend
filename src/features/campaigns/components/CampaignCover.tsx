@@ -1,8 +1,17 @@
-import { useRef, useState, type ChangeEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 import { useUploadCampaignCover } from "../hooks/useUploadCampaignCover";
 import { cn } from "../../../utils/cn";
 import { Upload } from "lucide-react";
 import Loader from "../../../components/ui/Loader";
+import { getCroppedImage } from "../../../utils/getCroppedImage";
+import Cropper, { type Area } from "react-easy-crop";
+import Button from "../../../components/ui/Button";
 
 interface CampaignCoverProps {
   campaignId: string;
@@ -11,14 +20,32 @@ interface CampaignCoverProps {
 }
 
 function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
-  const { uploadCoverAsync, isUploading } = useUploadCampaignCover(campaignId);
+  const { uploadCover, isUploading } = useUploadCampaignCover(campaignId);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  async function handleFileSelect(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.files?.length) {
-      await uploadCoverAsync(event.target.files[0]);
+  // cropper image state
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (imageToCrop) URL.revokeObjectURL(imageToCrop);
+    };
+  }, [imageToCrop]);
+
+  function handleFile(file: File) {
+    if (file) {
+      setImageToCrop(URL.createObjectURL(file));
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
+  function handleFileSelect(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.files?.length) {
+      handleFile(event.target.files[0]);
     }
   }
 
@@ -27,7 +54,7 @@ function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
   // Drag & Drop
   function handleDragOver(event: React.DragEvent) {
     event.preventDefault();
-    if (isMaster) setIsDragging(true);
+    if (isMaster && !imageToCrop) setIsDragging(true);
   }
 
   function handleDragLeave(event: React.DragEvent) {
@@ -35,14 +62,42 @@ function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
     setIsDragging(false);
   }
 
-  async function handleDrop(event: React.DragEvent) {
+  function handleDrop(event: React.DragEvent) {
     event.preventDefault();
     setIsDragging(false);
-    if (!isMaster || isUploading) return;
+    if (!isMaster || isUploading || imageToCrop) return;
 
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      await uploadCoverAsync(event.dataTransfer.files[0]);
+      handleFile(event.dataTransfer.files[0]);
     }
+  }
+
+  // memoize to optimize cropper and not recreating function every tipe
+  const onCropComplete = useCallback(
+    (_croppedArea: Area, croppedAreaPixels: Area) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    },
+    [],
+  );
+
+  async function handleConfirmCrop() {
+    try {
+      if (!imageToCrop || !croppedAreaPixels) return;
+
+      const croppedFile = await getCroppedImage(imageToCrop, croppedAreaPixels);
+
+      uploadCover(croppedFile, {
+        onSuccess: () => {
+          setImageToCrop(null);
+        },
+      });
+    } catch (e) {
+      console.error("Помилка обрізання зображення:", e);
+    }
+  }
+
+  function handleCancelCrop() {
+    setImageToCrop(null);
   }
 
   return (
@@ -56,16 +111,58 @@ function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
         disabled={isUploading}
       />
       <div
-        className="relative w-full aspect-video max-h-125 bg-background-contrast flex items-center justify-center overflow-hidden transition-all group/cover"
+        className="relative w-full aspect-video bg-background-contrast flex items-center justify-center overflow-hidden transition-all group/cover"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() =>
-          isMaster && !isUploading && fileInputRef.current?.click()
+          isMaster &&
+          !isUploading &&
+          !imageToCrop &&
+          fileInputRef.current?.click()
         }
       >
         {isUploading ? (
           <Loader variant="d20" size="lg" text="Завантаження..." />
+        ) : imageToCrop ? (
+          <div className="absolute inset-0 z-20 flex flex-col bg-background">
+            <div className="relative flex-1">
+              <Cropper
+                image={imageToCrop}
+                crop={crop}
+                zoom={zoom}
+                zoomSpeed={0.2}
+                aspect={16 / 9}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+                showGrid={false}
+                style={{
+                  containerStyle: {
+                    background: "var(--color-background-contrast)",
+                  },
+                }}
+              />
+            </div>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 border-2 border-border-strong bg-surface px-4 py-2 z-30">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleCancelCrop}
+              >
+                Скасувати
+              </Button>
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                onClick={handleConfirmCrop}
+              >
+                Зберегти обкладинку
+              </Button>
+            </div>
+          </div>
         ) : imageUrl ? (
           <img
             src={imageUrl}
@@ -81,7 +178,7 @@ function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
         )}
 
         {/* Drag/master hover overlay*/}
-        {isMaster && !isUploading && (
+        {isMaster && !isUploading && !imageToCrop && (
           <div
             className={cn(
               "absolute inset-0 flex items-center justify-center cursor-pointer transition-all duration-200",
@@ -90,7 +187,7 @@ function CampaignCover({ campaignId, imageUrl, isMaster }: CampaignCoverProps) {
                 : "bg-background/40 opacity-0 group-hover/cover:opacity-100 backdrop-blur-sm",
             )}
           >
-            <div className="flex items-center gap-2 border-2 border-border-strong bg-surface px-4 py-2 text-sm font-bold uppercase tracking-wider text-text-primary shadow-[4px_4px_0px_var(--color-border-strong)]">
+            <div className="flex items-center gap-2 border-2 border-border-strong bg-surface px-4 py-2 text-sm font-bold uppercase tracking-wider text-text-primary">
               <Upload size="16" />
               {isDragging
                 ? "Перетягніть зображення сюди"
