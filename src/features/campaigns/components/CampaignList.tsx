@@ -98,16 +98,16 @@ export function CampaignList({
     return campaign.meta.userRole === roleFilter;
   });
 
-  // CHANGE to createdAt/updatedAt comparison and not titles
   const sortedCampaigns = filteredCampaigns.toSorted((a, b) => {
     if (sortBy === "newest") {
-      return b.data.title.localeCompare(a.data.title);
+      console.log(b.data.createdAt);
+      return b.data.createdAt.localeCompare(a.data.createdAt);
     }
     if (sortBy === "oldest") {
-      return a.data.title.localeCompare(b.data.title);
+      return a.data.createdAt.localeCompare(b.data.createdAt);
     }
     if (sortBy === "updated") {
-      return 0;
+      return b.data.updatedAt.localeCompare(a.data.updatedAt);
     }
     return 0;
   });
@@ -153,7 +153,10 @@ export function CampaignList({
           setSortBy={setSortBy}
         />
       )}
-      <LayoutComponent campaigns={campaigns} onCreateClick={onCreateClick} />
+      <LayoutComponent
+        campaigns={sortedCampaigns}
+        onCreateClick={onCreateClick}
+      />
     </div>
   );
 

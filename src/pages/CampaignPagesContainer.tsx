@@ -17,7 +17,7 @@ function CampaignPagesContainer({
         className,
       )}
     >
-      <div className="mx-auto max-w-6xl p-8">{children}</div>
+      <div className="mx-auto max-w-7xl p-8">{children}</div>
     </div>
   );
 }

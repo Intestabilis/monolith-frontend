@@ -10,11 +10,11 @@ function CampaignGridCard({ campaign, showRole = true }: CampaignCardProps) {
   const optimizedImageUrl = getCloudinaryThumb(imageUrl);
   return (
     <Card variant="interactive">
-      <div className="relative mb-4 h-40 w-full overflow-hidden border border-border-muted bg-background">
+      <div className="relative mb-4 aspect-video w-full overflow-hidden border border-border-muted bg-background">
         <img
           src={optimizedImageUrl}
           alt={title}
-          className="h-full w-full object-cover grayscale contrast-125 transition-all group-hover:grayscale-0"
+          className="h-full w-full  object-cover grayscale contrast-125 transition-all group-hover:grayscale-0"
         />
         {showRole ? (
           <Badge
