@@ -24,7 +24,18 @@ function Navbar() {
         </Badge>
       </div>
 
-      <div className="hidden items-center gap-6 font-heading text-sm font-bold uppercase tracking-wider text-text-muted md:flex">
+      <div className="hidden items-center gap-8 font-heading text-sm font-bold uppercase tracking-wider text-text-muted md:flex">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            cn(
+              "hover:text-text-primary transition-colors",
+              isActive && "text-text-selected",
+            )
+          }
+        >
+          Головна
+        </NavLink>
         {/* <NavLink
           to="/about"
           className={({ isActive }) =>
@@ -34,10 +45,10 @@ function Navbar() {
             )
           }
         >
-          Something
+          Про Monolith
         </NavLink>
         <NavLink
-          to="/welcome"
+          to="/about"
           className={({ isActive }) =>
             cn(
               "hover:text-text-primary transition-colors",
@@ -45,7 +56,18 @@ function Navbar() {
             )
           }
         >
-          Dashboard
+          Зворотній зв'язок
+        </NavLink>
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            cn(
+              "hover:text-text-primary transition-colors",
+              isActive && "text-text-selected",
+            )
+          }
+        >
+          Інструменти
         </NavLink> */}
       </div>
 

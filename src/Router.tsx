@@ -7,7 +7,7 @@ import AuthPage from "./pages/AuthPage";
 import GlobalLayout from "./layouts/GlobalLayout";
 import ProtectedCampaignRoute from "./features/auth/ProtectedCampaignRoute";
 import CampaignLayout from "./layouts/CampaignLayout";
-// import DashboardPage from "./pages/DashboardPage";
+import DashboardPage from "./pages/DashboardPage";
 import CampaignPage from "./pages/CampaignPage";
 import JoinCampaignPage from "./pages/JoinCampaignPage";
 import QuestboardPage from "./pages/QuestboardPage";
@@ -30,7 +30,7 @@ function Router() {
         </Route>
         <Route element={<ProtectedAuthRoute />}>
           <Route path="/profile" element={<ProfilePage />} />
-          {/* <Route path="/welcome" element={<DashboardPage />} /> */}
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/join/:token" element={<JoinCampaignPage />} />
         </Route>
       </Route>
