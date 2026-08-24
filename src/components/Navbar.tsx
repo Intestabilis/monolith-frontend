@@ -36,7 +36,7 @@ function Navbar() {
         >
           Головна
         </NavLink>
-        {/* <NavLink
+        <NavLink
           to="/about"
           className={({ isActive }) =>
             cn(
@@ -47,6 +47,7 @@ function Navbar() {
         >
           Про Monolith
         </NavLink>
+        {/*
         <NavLink
           to="/about"
           className={({ isActive }) =>

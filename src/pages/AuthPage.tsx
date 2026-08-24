@@ -2,11 +2,16 @@ import { useState } from "react";
 import LoginForm from "../features/auth/components/LoginForm";
 import RegisterForm from "../features/auth/components/RegisterForm";
 import ForgotPasswordForm from "../features/auth/components/ForgotPasswordForm";
+import { useLocation } from "react-router";
 
 export type AuthMode = "login" | "register" | "forgot";
 
 function AuthPage() {
-  const [mode, setMode] = useState<AuthMode>("login");
+  // to set AuthMode from about page
+  const location = useLocation();
+  const [mode, setMode] = useState<AuthMode>(
+    location.state?.startMode ?? "login",
+  );
 
   function changeMode(newMode: AuthMode) {
     setMode(newMode);

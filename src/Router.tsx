@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router";
-import App from "./App";
 import ProtectedAuthRoute from "./features/auth/ProtectedAuthRoute";
 import GuestRoute from "./features/auth/GuestRoute";
 import ProfilePage from "./pages/ProfilePage";
@@ -15,14 +14,17 @@ import DMScreenPage from "./pages/DMScreenPage";
 import CampaignPagesContainer from "./pages/CampaignPagesContainer";
 import VerificationPage from "./pages/VerificationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import IndexPage from "./pages/IndexPage";
+import AboutPage from "./pages/AboutPage";
 
 function Router() {
   return (
     <Routes>
       <Route element={<GlobalLayout />}>
-        <Route path="/" element={<App />} />
-        {/* <Route path="/about" element={<div />} /> */}
+        <Route path="/" element={<IndexPage />} />
+        <Route path="/about" element={<AboutPage />} />
         {/* CHANGE add hero page here etc. */}
+
         <Route path="/verify" element={<VerificationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route element={<GuestRoute />}>
